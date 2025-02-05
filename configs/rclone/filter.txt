@@ -1,0 +1,11 @@
+# ~/.config/rclone/rclone-filter.txt
+# Sync the /codeshare directory but leave out the c build files and docker service appdata folder
+- /codeshare/docker/server-services/appdata/**
+- /codeshare/c/**/out/**
+- /codeshare/c/**/build/**
++ /codeshare/**
+# Sync the /synced_files directory but leave out all the cherrytree extra files
+- /synced_files/**/*~
++ /synced_files/**
+# Leave out everything else (mediadb files so far)
+- *

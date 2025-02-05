@@ -1,0 +1,14 @@
+services:
+  dns-updater:
+    image: mathat13/cloudflare-ddns-updater:latest
+    container_name: cloudflare-ddns-updater
+    init: true
+    restart: always
+    networks:
+      - default
+    env_file:
+      - .env
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"

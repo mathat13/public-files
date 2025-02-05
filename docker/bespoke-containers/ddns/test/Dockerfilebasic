@@ -1,0 +1,17 @@
+# Use the lightweight Alpine base image
+FROM alpine:latest
+
+# Install required tools: bash, curl, and dcron (cron daemon for Alpine)
+RUN apk add --no-cache bash curl
+
+# Set a working directory
+WORKDIR /app
+
+# Copy the script into the container
+COPY update-ip.sh /app/update-ip.sh
+
+# Make the script executable
+RUN chmod -R 755 /app
+
+# Start cron and keep it running
+CMD ["/app/update-ip.sh"]

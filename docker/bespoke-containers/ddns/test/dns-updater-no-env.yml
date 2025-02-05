@@ -1,0 +1,15 @@
+services:
+  dns-updater:
+    build: .
+    container_name: dns-updater
+    init: true
+    restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    environment:
+      - DNS_RECORD_NAME=cabanaca.com
+      - PUT_KEY=DKHaZ4mSQo-K3UqenVoQ4FEwwyCieSC3CxOiVtqB
+      - GET_KEY=QGxzEng2qO2O8gneE25YBT5sM5zOYhU8PbhoWiP2
+      - DNS_ZONE_ID=7eb84f2418e606ae8b113ff78b2286c5

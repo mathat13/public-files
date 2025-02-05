@@ -1,0 +1,1 @@
+-w /home/bestguy/.config/rclone -p a -k rclone_watch

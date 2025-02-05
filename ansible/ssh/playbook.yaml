@@ -1,0 +1,28 @@
+---
+- name: Set up SSH key access
+  hosts: all
+  gather_facts: no
+  vars_files:
+    - vault.yaml
+  tasks:
+    - name: Try SSH with key-based authentication
+      block:
+        - name: Ensure SSH key-based authentication works
+          become: yes
+          become_user: bestguy
+          command: ssh -o BatchMode=yes -i "/home/ansible/.ssh/ansible_id_rsa" {{ ansible_user }}@{{ ansible_host }} exit 0
+          ignore_errors: yes
+          register: ssh_key_check
+
+        - name: Fallback to password-based login if key fails
+          when: ssh_key_check.rc != 0
+          block:
+            - name: Install SSH public key using password
+              ansible.builtin.authorized_key:
+                user: ansible
+                state: present
+                key: "{{ lookup('file', 'files/ansible_id_rsa.pub') }}"
+              become: yes
+              vars:
+                become_password: "{{ansible_become_password }}"
+                ansible_ssh_pass: "{{ ansible_ssh_password }}"

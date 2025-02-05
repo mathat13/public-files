@@ -1,0 +1,65 @@
+#/etc/postfix/main.cf
+
+# See /usr/share/postfix/main.cf.dist for a commented, more complete version
+
+#myorigin = /etc/mailname
+
+smtpd_banner = $myhostname ESMTP $mail_name (Ubuntu)
+biff = no
+
+# appending .domain is the MUA's job.
+append_dot_mydomain = no
+
+# Uncomment the next line to generate "delayed mail" warnings
+#delay_warning_time = 4h
+
+readme_directory = no
+
+# See http://www.postfix.org/COMPATIBILITY_README.html -- default to 3.6 on
+# fresh installs.
+compatibility_level = 3.6
+
+
+
+# TLS parameters
+smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
+smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
+smtpd_tls_security_level=may
+
+smtp_tls_CApath=/etc/ssl/certs
+smtp_tls_security_level=may
+smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+
+
+smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated reject_unauth_destination
+# Change myhostname to hostname.local
+myhostname = test-server.local
+# Removed alias lookups as it interfered with mail delivery when running postfix from no_config
+alias_maps = 
+alias_database = 
+myorigin = /etc/mailname
+# Change mydistination hostname references
+mydestination = $myhostname, localhost, localhost.localdomain
+relayhost =
+# Added home network below
+mynetworks = 192.168.1.0/24 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
+mailbox_size_limit = 0
+recipient_delimiter = +
+inet_interfaces = all
+inet_protocols = all
+# Uses native lookup instead of DNS MX records
+smtp_host_lookup = native
+# Define the way to reach required hosts
+transport_maps = hash:/etc/postfix/transport
+# Define mail folder
+home_mailbox = Maildir/
+
+# Set authentication to use dovecot
+smtpd_sasl_type = dovecot
+
+# Can be an absolute path, or relative to $queue_directory
+# Debian/Ubuntu users: Postfix is setup by default to run chrooted, so it is best to leave it as-is below
+smtpd_sasl_path = private/auth
+
+# and the common settings to enable SASL:
+smtpd_sasl_auth_enable = yes

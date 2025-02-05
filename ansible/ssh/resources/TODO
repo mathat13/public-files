@@ -1,0 +1,9 @@
+- Set up Ansible client server
+- Follow instructions here:
+https://meheraskri.medium.com/configure-nfs-server-and-client-using-ansible-bea387a9d303
+- Theory here:
+https://rhtapps.redhat.com/promo/course/do007?segment=0
+- Other people's ones here:
+-- https://debugthis.dev/ansible/2019-09-29-ansible-for-mounting-nfs-shares/
+-- https://github.com/indigo-dc/ansible-role-nfs
+-- 

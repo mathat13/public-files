@@ -1,0 +1,14 @@
+services:
+  dns-updater:
+    build: .
+    container_name: dns-updater
+    init: true
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - /mnt/codeshare/myFirstContainer/testvolume:/app
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"

@@ -1,0 +1,23 @@
+services:
+  valheim:
+    image: ghcr.io/lloesche/valheim-server
+    cap_add:
+      - sys_nice
+    volumes:
+      - $DOCKERDIR/appdata/valheim-server/config:/config
+      - $DOCKERDIR/valheim-server/media:/data/media
+    ports:
+      - "2456-2458:2456-2458/udp"
+      - "9001:9001/tcp"
+    env_file:
+      - $DOCKERDIR/appdata/valheim-server/config/valheim.env
+    networks:
+      - default
+    security_opt:
+      - no-new-privileges:true
+    restart: "no"
+    # profiles: ["media", "all"]
+    user: $PUID:$PGID
+    stop_grace_period: 2m
+
+
