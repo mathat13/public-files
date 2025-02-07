@@ -4,7 +4,7 @@
 echo -e "\nDaily crontab backup for `date`"
 
 # cd to public directory
-cd /shares/dfsroot/codeshare
+cd /shares/dfsroot/codeshare || exit 1
 
 # Add and commit changes
 /usr/bin/git add --all
@@ -14,7 +14,7 @@ cd /shares/dfsroot/codeshare
 /usr/bin/git push origin main
 
 # cd to private directory
-cd /shares/dfsroot/synced_files
+cd /shares/dfsroot/synced_files || exit 1
 
 # Add and commit changes
 /usr/bin/git add --all
