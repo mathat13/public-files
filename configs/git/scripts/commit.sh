@@ -9,7 +9,7 @@ echo -e "\e[93mDaily crontab backup for `date`\n\e[0m"
 for dir in "${dirs[@]}"; do
 
     # State which directory we're pushing to
-    echo -e "Pushing contents of $dir to GitHub repository:\n"
+    echo -e "\e[32m- Pushing contents of $dir to GitHub repository:\n\e[0m"
 
     # cd to public directory
     cd $dir || exit 1
@@ -21,5 +21,5 @@ for dir in "${dirs[@]}"; do
     # send data to Git server
     /usr/bin/git push origin main
 
-    echo -e "\nPush completed.\n"
+    echo -e "\e[32m\n- Push completed.\n\e[0m"
 done
