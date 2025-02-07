@@ -3,7 +3,6 @@
 dirs=(
     "/shares/dfsroot/synced_files"
     "/shares/dfsroot/codeshare"
-    "/poop"
 )
 
 # State time and date
