@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # State time and date
-echo -e "\nDaily crontab backup for `date`"
+echo $"\nDaily crontab backup for `date`\n"
 
 # cd to public directory
 cd /shares/dfsroot/codeshare || exit 1
