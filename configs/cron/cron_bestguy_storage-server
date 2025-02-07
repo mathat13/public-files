@@ -1,0 +1,5 @@
+# cron job to back up SMB drive at /shares/dfsroot to google drive and email results to test-server
+0 3 * * * rclone copy /shares/dfsroot gdrive_mount_crypt: --bwlimit=8.5M --progress --filter-from /home/bestguy/.config/rclone/rclone-filter.txt --delete-excluded | mail -s "Daily Backup Report" bestguy@test-server.local
+# Run script to push contents of directory specified in commit.sh to the associated GitHub repository
+# and send logs to a log file
+0 4 * * * /home/bestguy/commit.sh >> /home/bestguy/cron.log 2>&1

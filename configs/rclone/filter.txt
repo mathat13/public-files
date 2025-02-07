@@ -1,4 +1,6 @@
 # ~/.config/rclone/rclone-filter.txt
+# Ignore anything in .git folders
+- /**/.git/**
 # Sync the /codeshare directory but leave out the c build files and docker service appdata folder
 - /codeshare/docker/server-services/appdata/**
 - /codeshare/c/**/out/**
