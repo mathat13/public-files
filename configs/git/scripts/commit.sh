@@ -1,14 +1,20 @@
 #!/bin/bash
 
-dirs=(
-    "/shares/dfsroot/synced_files"
-    "/shares/dfsroot/codeshare"
-)
+# Find all .git directories and return in an array
+readarray -d '' git_dirs < <(find / -name ".git" -type d -print0 2>/dev/null)
+
+# Define a list of parent paths for cding
+parent_dirs=()
+
+# Populate the parent_dirs with the relevant paths
+for dir in "${git_dirs[@]}"; do
+    parent_dirs+=("${dir%/*}")  # Remove "/.git" to get the parent directory
+done
 
 # State time and date
 echo -e "\e[4;96mDaily crontab backup for `date`:\n\e[0m"
 
-for dir in "${dirs[@]}"; do
+for dir in "${parent_dirs[@]}"; do
 
     # cd to public directory and return error and exit script if dir not found
     cd $dir 2>/dev/null || { echo -e "\e[31m[Error] Directory '$dir' not found! \n\e[0m"; exit 1;}
