@@ -6,7 +6,7 @@ dirs=(
 )
 
 # State time and date
-echo -e "\e[93mDaily crontab backup for `date`:\n\e[0m"
+echo -e "\e[4;96mDaily crontab backup for `date`:\n\e[0m"
 
 for dir in "${dirs[@]}"; do
 
