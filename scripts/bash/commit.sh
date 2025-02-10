@@ -1,5 +1,8 @@
 #!/bin/bash
 
+LOGFILE="$HOME/.local/scripts/git-backups/logs/git-backups.log"
+exec >> "$LOGFILE" 2>&1  # Redirect all stdout and stderr to the log
+
 # Find all .git directories and return paths in an array
 readarray -d '' git_dirs < <(find / -name ".git" -type d -print0 2>/dev/null)
 
