@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Define log file location
 LOGFILE="$HOME/.local/scripts/git-backups/logs/git-backups.log"
 exec >> "$LOGFILE" 2>&1  # Redirect all stdout and stderr to the log
 
