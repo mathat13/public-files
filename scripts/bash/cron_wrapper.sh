@@ -12,7 +12,7 @@
 #
 # hitherto, both stdout and stderr end up in the log file
 #
-#exec 2>&1 1>>"$log_file"
+# exec 2>&1 1>>"$log_file"
 
 #
 # Run the environment setup that is shared across all jobs.
@@ -20,7 +20,7 @@
 #
 # Note: it is not a good practice to source in .profile or .bashrc here
 #
-source "$HOME/.local/bin/cron_env_setup"
+source "$HOME/.local/bin/cron_env_setup" 1>/dev/null
 
 #
 # run the job
