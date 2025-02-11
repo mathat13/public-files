@@ -4,7 +4,7 @@ function create_script_directory() {
     # Set script path
     script_path="$HOME/.local/scripts/$name"
     # Create script directory
-    mkdir "$script_path"
+    mkdir -p "$script_path"
     # Create script directory structure
     mkdir "$script_path/bin" "$script_path/logs"
     # Create required basic files
@@ -18,7 +18,7 @@ function create_script_directory() {
 }
 
 function remove_script_directory() {
-   # Get script name
+    # Get script name
     read -p "Enter script name: " name
     # Remove script directory
     rm -r "$HOME/.local/scripts/$name"
@@ -29,6 +29,6 @@ function remove_script_directory() {
 if [[ -d "$HOME/.local/scripts" ]]; then
     create_script_directory
 else
-    mkdir "$HOME/.local/scripts"
+    mkdir -p "$HOME/.local/scripts"
     create_script_directory
 fi

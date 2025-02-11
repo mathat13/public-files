@@ -23,8 +23,11 @@ for dir in "${parent_dirs[@]}"; do
     # cd to public directory and return error and exit script if dir not found
     cd $dir 2>/dev/null || { echo -e "\e[31m[Error] Directory '$dir' not found! \n\e[0m"; exit 1;}
 
+    # Get repository name
+    repository=$(basename -s .git `git config --get remote.origin.url` 2>/dev/null || echo "")
+    
     # State which directory we're pushing to
-    echo -e "\e[93m[Status] Pushing contents of $dir to GitHub repository:\n\e[0m"
+    echo -e "\e[93m[Status] Pushing contents of $dir to GitHub repository $repository:\n\e[0m"
 
     # Add and commit changes
     /usr/bin/git add --all
