@@ -15,6 +15,7 @@ int add_array_elements(int *arr, size_t size) {
     // Covers case where array is empty
     if (size == 0) return 0;
 
+    // Checks case if size of array passed is ridiculously large
     if (size > SIZE_MAX / sizeof(int)) {
         fprintf(stderr,"Invalid size: Too large!\n");
         return -1;
@@ -29,7 +30,7 @@ int add_array_elements(int *arr, size_t size) {
             return -1;
         }
 
-        // Check for integer underflow (summed_elements + arr[i] < INT_MIN without actually performing the overflow)
+        // Check for integer underflow (summed_elements + arr[i] < INT_MIN without actually performing the underflow)
         if (arr[i] < 0 && summed_elements < INT_MIN - arr[i]) {
             fprintf(stderr,"Underflow detected!\n");
             return -1;
