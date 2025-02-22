@@ -1,8 +1,12 @@
 #include "functions.h"
+#include "stdio.h"
 // #include <string.h>
 
 //Add functions here:
 
+int add_array_elements(int *arr, size_t size) {
+
+}
 
 // Example functions:
 // A simple function to add two integers

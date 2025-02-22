@@ -7,17 +7,8 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Launch",
-            "program": "${workspaceFolder}/out/build/mingw64_preset/ProductionCode.exe",
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-
-        {
-            "type": "lldb",
-            "request": "launch",
             "name": "Debug",
-            "program": "${workspaceFolder}/out/build/mingw64_preset/ProductionCode.exe",
+            "program": "${workspaceFolder}/<executable file>",
             "args": [],
             "cwd": "${workspaceFolder}"
         }
