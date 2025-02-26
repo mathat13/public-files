@@ -6,7 +6,7 @@ int main() {
 
     // Main code here:
 
-
+    return 0;  // Return 0 to indicate successful execution
     // Example main:
     // Example usage of add_numbers
     // int sum = add_numbers(3, 5);
@@ -17,5 +17,4 @@ int main() {
     // reverse_string(str);
     // printf("Reversed string: %s\n", str);
 
-    return 0;  // Return 0 to indicate successful execution
 }

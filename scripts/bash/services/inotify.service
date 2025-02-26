@@ -1,0 +1,14 @@
+[Unit]
+Description=Watch SMB share for executable files and set permissions
+After=network.target
+
+[Service]
+ExecStart=/home/bestguy/.local/scripts/inotify/bin/inotify.sh
+Restart=always
+User=bestguy
+Group=bestguy
+StandardOutput=append:/var/log/set_execute.log
+StandardError=append:/var/log/set_execute.log
+
+[Install]
+WantedBy=multi-user.target

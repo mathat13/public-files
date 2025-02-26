@@ -6,7 +6,7 @@ add_executable(ProductionCode src/main.c src/functions.c)
 target_include_directories(ProductionCode PRIVATE src)
 
 # Add test files when compiling tests
-add_executable(Tests test/test_sample.c test/unity.c src/functions.c)
+add_executable(Tests test/tests.c test/unity.c src/functions.c)
 target_include_directories(Tests PRIVATE src test)
 
 # Link libraries if needed (e.g., math library)

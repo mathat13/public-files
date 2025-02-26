@@ -5,7 +5,7 @@
 //Add functions here:
 
 int add_array_elements(int *arr, size_t size) {
-
+    return 0;
 }
 
 // Example functions:
