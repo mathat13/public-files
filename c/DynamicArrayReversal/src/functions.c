@@ -1,11 +1,36 @@
 #include "functions.h"
 #include "stdio.h"
+#include "stdlib.h"
 // #include <string.h>
 
 //Add functions here:
 
-int add_array_elements(int *arr, size_t size) {
-    return 0;
+int* reverse_array(int *arr, size_t size) {
+    int* new_arr;
+
+    // int* new_arr = calloc(size, size * sizeof *new_arr );
+    // Define new array
+    new_arr = malloc( sizeof *new_arr * size );
+
+    // Check if memory allocated correctly
+    if (new_arr == NULL) {
+        printf("Memory Allocation Failed!");
+        return NULL;
+    }
+    
+    // Define initial index values for each array
+    int i = 0;
+    int j = size - 1;
+
+    while (i < size) {
+        new_arr[i] = arr[j];
+        // *(new_arr + i) = *(arr_int + j);
+        // printf("%d\n", new_arr[i]);
+        i++;
+        j--;
+    }
+
+    return new_arr;
 }
 
 // Example functions:

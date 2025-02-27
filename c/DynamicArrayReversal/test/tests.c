@@ -14,7 +14,9 @@ void tearDown(void) {
 
 // Add tests here:
 
-
+void test_reverse_array(void) {
+    
+}
 // Example tests:
 // Test the add_numbers function
 // void test_add_numbers(void) {
