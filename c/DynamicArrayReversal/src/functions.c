@@ -8,9 +8,18 @@
 int* reverse_array(int *arr, size_t size) {
     int* new_arr;
 
+    if ( arr == NULL ) {
+        printf( "Null pointer passed, returning null pointer!\n" );
+        return NULL;
+    }
+
+    if ( size == 0 ) {
+        printf( "Size of 0 passed, returning null pointer!\n" );
+        return NULL;
+    }
     // int* new_arr = calloc(size, size * sizeof *new_arr );
     // Define new array
-    new_arr = malloc( sizeof *new_arr * size );
+    new_arr = malloc( sizeof *arr * size );
 
     // Check if memory allocated correctly
     if (new_arr == NULL) {

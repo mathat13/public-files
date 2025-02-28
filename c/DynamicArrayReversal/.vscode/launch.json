@@ -7,7 +7,15 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug",
+            "name": "Debug Tests",
+            "program": "${workspaceFolder}/out/build/mingw64_preset/Tests.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug Code",
             "program": "${workspaceFolder}/out/build/mingw64_preset/ProductionCode.exe",
             "args": [],
             "cwd": "${workspaceFolder}"
