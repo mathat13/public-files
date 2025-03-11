@@ -9,15 +9,15 @@
         {
             "name": "mingw64_preset",
             "displayName": "GCC 14.2.0 x86_64-w64-mingw32",
-            "description": "Using compilers: C = C:\\Program Files (x86)\\mingw64\\bin\\gcc.exe, CXX = C:\\Program Files (x86)\\mingw64\\bin\\g++.exe",
+            "description": "Using compilers: C = F:\\Programs\\mingw64\\bin\\gcc.exe, CXX = F:\\Programs\\mingw64\\bin\\g++.exe",
             "generator": "MinGW Makefiles",
             "binaryDir": "${sourceDir}/out/build/${presetName}",
             "cacheVariables": {
                 "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
-                "CMAKE_C_COMPILER": "C:/Program Files (x86)/mingw64/bin/gcc.exe",
+                "CMAKE_C_COMPILER": "F:/Programs/mingw64/bin/gcc.exe",
                 "CMAKE_C_FLAGS": "-gdwarf-2",
                 "CMAKE_C_STANDARD_REQUIRED": "ON",
-                "CMAKE_CXX_COMPILER": "C:/Program Files (x86)/mingw64/bin/g++.exe",
+                "CMAKE_CXX_COMPILER": "F:/Programs/mingw64/bin/g++.exe",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
                 "CMAKE_BUILD_TYPE": "Debug"
             }
