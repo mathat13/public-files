@@ -1,0 +1,37 @@
+- name: Set up configs directory and test file
+  hosts: servers
+  become: yes
+  tasks:
+    - name: Ensure /configs directory exists
+      file:
+        path: /configs
+        state: directory
+        mode: '0755'
+
+    - name: Create a test NFS exports config file
+      copy:
+        dest: /configs/exports
+        content: |
+          /srv/nfs 192.168.1.0/24(rw,sync,no_root_squash)
+        mode: '0644'
+    - name: Create hard link for NFS exports file
+      file:
+        src: /configs/exports
+        dest: /etc/exportstest
+        state: hard
+
+- name: Ensure Git is installed
+  hosts: servers
+  become: yes
+  tasks:
+    - name: Install Git (Debian/Ubuntu)
+      apt:
+        name: git
+        state: present
+      when: ansible_facts['os_family'] == "Debian"
+
+    - name: Install Git (RHEL/CentOS)
+      yum:
+        name: git
+        state: present
+      when: ansible_facts['os_family'] == "RedHat"
