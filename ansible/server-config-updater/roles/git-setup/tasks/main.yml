@@ -1,0 +1,48 @@
+---
+# tasks file for roles/git-setup
+- name: Install Git
+  become: yes
+  package:
+    name: git
+    state: present
+
+- name: Set Git username
+  git_config:
+    name: user.name
+    scope: global
+    value: "{{ git_username }}"
+
+- name: Set Git email
+  git_config:
+    name: user.email
+    scope: global
+    value: "{{ git_email }}"
+
+- name: Ensure .ssh directory exists
+  file:
+    path: ~/.ssh
+    state: directory
+    mode: '0700'
+
+- name: Copy SSH private key
+  copy:
+    src: ~/ansible/id_rsa_git
+    dest: ~/.ssh/id_rsa_git
+    mode: '0600'
+
+- name: Copy SSH public key
+  copy:
+    src: ~/ansible/id_rsa_git.pub
+    dest: ~/.ssh/id_rsa_git.pub
+    mode: '0644'
+
+- name: Set up SSH config for GitHub
+  copy:
+    dest: ~/.ssh/config
+    content: |
+      Host github.com
+        IdentityFile ~/.ssh/id_rsa_git
+        User git
+        StrictHostKeyChecking no
+    mode: '0600'
+

@@ -1,0 +1,31 @@
+---
+# tasks file for roles/git-pull
+- name: Ensure /configs directory exists
+  become: yes
+  file:
+    path: /configs
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: '0755'
+
+- name: Clone the Git repo (if not already cloned)
+  git:
+    repo: "{{ git_repo_url }}"
+    dest: /configs 
+    version: "{{ git_branch | default('main') }}"
+    accept_hostkey: yes
+    update: no
+
+- name: Pull latest changes
+  git:
+    repo: "{{ git_repo_url }}"
+    dest: /configs
+    version: "{{ git_branch | default('main') }}"
+    accept_hostkey: yes
+    force: yes
+
+- name: Ensure the correct folder is pulled for this machine
+  command: git checkout "{{ git_machine_folder }}"
+  args:
+    chdir: /configs

@@ -1,0 +1,8 @@
+---
+- name: Set up Git and SSH for GitHub
+  hosts: servers
+  roles:
+    - git-setup
+  vars:
+    git_username: "mathat13"
+    git_email: "lovell.jwz@gmail.com"
