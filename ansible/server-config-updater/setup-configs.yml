@@ -1,25 +1,3 @@
-- name: Set up configs directory and test file
-  hosts: servers
-  become: yes
-  tasks:
-    - name: Ensure /configs directory exists
-      file:
-        path: /configs
-        state: directory
-        mode: '0755'
-
-    - name: Create a test NFS exports config file
-      copy:
-        dest: /configs/exports
-        content: |
-          /srv/nfs 192.168.1.0/24(rw,sync,no_root_squash)
-        mode: '0644'
-    - name: Create hard link for NFS exports file
-      file:
-        src: /configs/exports
-        dest: /etc/exportstest
-        state: hard
-
 - name: Set up Git and SSH for GitHub
   hosts: servers
   roles:
@@ -35,3 +13,9 @@
   vars:
     git_repo_url: git@github.com:mathat13/machine-configs
     ansible_user_id: bestguy
+
+- name: Hardlink service configurations to git
+  hosts: servers
+  roles:
+    - hardlink
+

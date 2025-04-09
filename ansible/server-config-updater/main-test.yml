@@ -1,8 +1,5 @@
 ---
-- name: Set up/ pull changes from specified git repo
+- name: Hardlink service configurations to git
   hosts: servers
   roles:
-    - git-pull
-  vars:
-    git_repo_url: git@github.com:mathat13/backup-test
-    ansible_user_id: bestguy
+    - nfs-setup

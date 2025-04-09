@@ -3,4 +3,4 @@
 services:
   - name: nfs
     config_file: /etc/exports
-    source_file: /configs/nfs/exports
+    source_file: /configs/storage-server/nfs/exports
