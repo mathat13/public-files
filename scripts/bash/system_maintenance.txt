@@ -1,0 +1,11 @@
+- check package updates and upgrades each day
+- find way to fully automate package update/ upgrade
+- check if reboot required on success
+- run daily after backups
+- done
+
+apt update -y
+apt upgrade -y
+if (/var/log/rebootnow present):
+    reboot now
+fi
