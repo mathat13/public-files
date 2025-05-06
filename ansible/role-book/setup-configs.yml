@@ -1,0 +1,25 @@
+- name: Set up Git and SSH for GitHub
+  hosts: servers
+  roles:
+    - git-setup
+  vars:
+    git_username: "mathat13"
+    git_email: "lovell.jwz@gmail.com"
+
+- name: Set up/ pull changes from specified git repo
+  hosts: servers
+  roles:
+    - git-pull
+  vars:
+    git_repo_url: git@github.com:mathat13/machine-configs
+    ansible_user_id: bestguy
+
+- name: Hardlink service configurations to git
+  hosts: servers
+  roles:
+    - hardlink
+
+- name: Host nfs server
+  hosts: servers
+  roles:
+    - nfs-setup

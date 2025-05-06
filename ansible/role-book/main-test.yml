@@ -1,0 +1,5 @@
+---
+- name: Hardlink service configurations to git
+  hosts: servers
+  roles:
+    - nfs-setup
