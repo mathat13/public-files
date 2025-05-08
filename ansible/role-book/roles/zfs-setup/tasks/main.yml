@@ -1,2 +1,28 @@
 ---
 # tasks file for roles/zfs-setup
+- name: Install zfs-utils
+  become: true
+  package:
+    name: zfsutils-linux
+    state: present
+
+- name: Create zpool tank on block device /dev/sdb
+  become: true
+  ansible.builtin.command:
+    "zpool create tank /dev/sdb"
+  register: zpool_created
+
+- name: Create root filesystem mount directory
+  become: true
+  ansible.builtin.file:
+    path: /shares
+    state: directory
+
+- name: Create a new file system called sharing in pool tank and mount to /shares
+  become: true
+  community.general.zfs:
+    name: tank/sharing
+    state: present
+    extra_zfs_properties: 
+      mountpoint: /shares
+

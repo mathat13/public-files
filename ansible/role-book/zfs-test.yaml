@@ -1,0 +1,4 @@
+- name: Setup ZFS
+  hosts: servers
+  roles:
+    - zfs-setup
