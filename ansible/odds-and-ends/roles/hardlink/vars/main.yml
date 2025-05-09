@@ -1,0 +1,6 @@
+---
+# vars file for roles/hardlink
+services:
+  - name: nfs
+    config_file: /etc/exports
+    source_file: /configs/storage-server/nfs/exports
