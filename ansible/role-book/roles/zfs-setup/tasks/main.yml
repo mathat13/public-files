@@ -6,11 +6,33 @@
     name: zfsutils-linux
     state: present
 
-- name: Create zpool tank on block device /dev/sdb
+- name: manage_zfs | checking existing zpool(s)
+  ansible.builtin.shell: "zpool list | awk 'FNR >1' | awk '{print $1}'"
+  changed_when: false
+  register: zpools
+  check_mode: no
+  when: zfs_pools is defined
+
+- name: manage_zfs | Gather ZPool Status
+  ansible.builtin.shell: zpool status
+  changed_when: false
+  register: zpool_devices
+  check_mode: no
+  when: zfs_pools is defined
+
+- name: manage_zfs | creating basic zpool(s)
   become: true
-  ansible.builtin.command:
-    "zpool create tank /dev/sdb"
+  ansible.builtin.command: "zpool create {{ '-o '+ item.options.items() |map('join', '=') | join (' -o ') if item.options is defined else '' }} {{ item.name }} {{ item.devices|join (' ') }}"
   register: zpool_created
+  with_items: "{{ zfs_pools }}"
+  when: >
+        zfs_pools is defined and
+        zfs_create_pools and
+        (item.type == "basic" and
+        item.name not in zpools.stdout and
+        item.state == "present") and
+        item.devices[0] not in zpool_devices.stdout and
+        item.action|lower == "create"
 
 - name: Create root filesystem mount directory
   become: true

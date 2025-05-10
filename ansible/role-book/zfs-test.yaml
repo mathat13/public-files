@@ -1,4 +1,8 @@
 - name: Setup ZFS
   hosts: servers
+  vars_files:
+    - vars/zfs-pools.yml
   roles:
-    - zfs-setup
+    - role: zfs-setup
+      vars:
+        zfs_create_pools: true
