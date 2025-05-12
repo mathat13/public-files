@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fake Live Like Counter</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    #like-count {
+      font-size: 48px;
+      color: #ff0000;
+    }
+    .note {
+      font-size: 14px;
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🔥 Awesome Video</h1>
+  <p>Likes: <span id="like-count">950</span></p>
+  <p class="note">(This is a fake live update demo)</p>
+
+  <script>
+    let realLikeCount = 950;            // Server-known real count
+    let displayedLikeCount = realLikeCount;
+    const likeDisplay = document.getElementById('like-count');
+
+    function updateDisplay() {
+      likeDisplay.textContent = displayedLikeCount;
+    }
+
+    // Fake "live updates" every 2-5 seconds
+    setInterval(() => {
+      const randomIncrease = Math.random() < 0.7 ? 1 : 0; // 70% chance to go up
+      displayedLikeCount += randomIncrease;
+      updateDisplay();
+    }, Math.random() * 3000 + 2000); // Random delay between updates
+
+    // Simulate a real "server sync" every 15 seconds
+    setInterval(() => {
+      // Imagine this came from an actual server fetch
+      realLikeCount += Math.floor(Math.random() * 3); // The real count goes up slowly
+      displayedLikeCount = realLikeCount; // Reset fake to real
+      updateDisplay();
+    }, 15000);
+
+    updateDisplay();
+  </script>
+
+</body>
+</html>
