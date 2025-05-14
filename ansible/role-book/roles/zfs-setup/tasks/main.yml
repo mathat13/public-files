@@ -34,17 +34,29 @@
         item.devices[0] not in zpool_devices.stdout and
         item.action|lower == "create"
 
-- name: Create root filesystem mount directory
+- name: manage_zfs | Create filesystem custom mountpoints
   become: true
   ansible.builtin.file:
-    path: /shares
+    path: "{{ item.options.mountpoint }}"
     state: directory
+  register: mountpoint_created
+  loop: "{{ zfs_filesystems }}"
+  when: >
+        zfs_filesystems is defined and
+        zfs_create_filesystems and
+        (item.options.mountpoint is defined and
+        item.state == "present")
 
-- name: Create a new file system called sharing in pool tank and mount to /shares
+- name: manage_zfs | create basic filesystem
   become: true
   community.general.zfs:
-    name: tank/sharing
-    state: present
-    extra_zfs_properties: 
-      mountpoint: /shares
-
+    name: "{{ item.pool }}/{{ item.name }}"
+    state: "{{ item.state }}"
+    extra_zfs_properties: "{{ item.options }}"
+  register: filesystem_created
+  loop: "{{ zfs_filesystems }}"
+  when: >
+        zfs_filesystems is defined and
+        zfs_create_filesystems and
+        (item.pool in zpools.stdout and
+        item.state =="present")

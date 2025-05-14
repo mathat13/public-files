@@ -2,7 +2,9 @@
   hosts: servers
   vars_files:
     - vars/zfs-pools.yml
+    - vars/zfs-filesystems.yml
   roles:
     - role: zfs-setup
       vars:
         zfs_create_pools: true
+        zfs_create_filesystems: true
