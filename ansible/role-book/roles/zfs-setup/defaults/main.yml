@@ -8,7 +8,7 @@ zfs_create_filesystems: false
 zfs_create_pools: false
 
 # Defines if NFS Kernel Server should be installed to serve NFS
-zfs_enable_nfs: false
+zfs_enable_nfs: true
 
 # Defines if Samba is installed and configured
 zfs_enable_samba: false

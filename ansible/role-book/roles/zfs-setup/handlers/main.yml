@@ -1,2 +1,7 @@
 ---
 # handlers file for roles/zfs-setup
+- name: Restart NFS
+  become: true
+  ansible.builtin.systemd:
+    name: nfs-kernel-server
+    state: restarted
