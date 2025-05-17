@@ -19,14 +19,14 @@
   ansible.builtin.command: "zpool create {{ '-o '+ item.options.items() |map('join', '=') | join (' -o ') if item.options is defined else '' }} {{ item.name }} {{ item.devices|join (' ') }}"
   register: zpool_created
   with_items: "{{ zfs_pools }}"
-  when: >
-        zfs_pools is defined and
-        zfs_create_pools and
-        (item.type == "basic" and
-        item.name not in zpools.stdout and
-        item.state == "present") and
-        item.devices[0] not in zpool_devices.stdout and
-        item.action|lower == "create"
+  when:
+    - zfs_pools is defined
+    - zfs_create_pools
+    - item.type == "basic"
+    - item.name not in zpools.stdout
+    - item.state == "present"
+    - item.devices[0] not in zpool_devices.stdout
+    - item.action|lower == "create"
 
 - name: manage_zfs | Create filesystem custom mountpoints
   become: true
@@ -35,11 +35,11 @@
     state: directory
   register: mountpoint_created
   loop: "{{ zfs_filesystems }}"
-  when: >
-        zfs_filesystems is defined and
-        zfs_create_filesystems and
-        (item.options.mountpoint is defined and
-        item.state == "present")
+  when:
+    - zfs_filesystems is defined
+    - zfs_create_filesystems
+    - item.options.mountpoint is defined
+    - item.state == "present"
 
 - name: manage_zfs | create basic filesystem
   become: true
@@ -55,7 +55,7 @@
     - item.pool in zpools.stdout
     - item.state == "present"
 
-- name: manage_zfs | notify handler if NFS sharing is enabled
+- name: manage_zfs | notify handler if NFS sharing is enabled and set in a filesystem
   ansible.builtin.debug:
       msg: "Triggering NFS reload due to shared filesystem: {{ item.name }}"
   notify: Reload NFS
@@ -63,5 +63,16 @@
     - item.options.sharenfs is defined
     - item.options.sharenfs
     - zfs_enable_nfs
+    - zfs_create_filesystems
+  loop: "{{ zfs_filesystems }}"
+
+- name: manage_zfs | notify handler if SMB sharing is enabled and set in a filesystem
+  ansible.builtin.debug:
+      msg: "Triggering smbd reload due to shared filesystem: {{ item.name }}"
+  notify: Reload samba
+  when:
+    - item.options.sharesmb is defined
+    - item.options.sharesmb
+    - zfs_enable_samba
     - zfs_create_filesystems
   loop: "{{ zfs_filesystems }}"

@@ -8,3 +8,5 @@
       vars:
         zfs_create_pools: true
         zfs_create_filesystems: true
+        zfs_enable_samba: true
+        zfs_enable_nfs: true

@@ -5,3 +5,9 @@
   ansible.builtin.systemd:
     name: nfs-kernel-server
     state: restarted
+
+- name: Restart samba
+  become: true
+  ansible.builtin.systemd:
+    name: smbd
+    state: restarted

@@ -16,7 +16,8 @@ zfs_filesystems:
       refquota: none
       # Defines recordsize.. 16K | 32K | 64K | 128K (default) | and etc.
       recordsize: 16K
-      sharenfs: "rw=@192.168.1.0/24"
+      # sharenfs: "rw=@192.168.1.0/24"
+      sharesmb: on
       # standard (default) | always | disabled    sync: disabled
       # Controls whether the snapshots devices of zvol's are hidden or visible. hidden (default) | visible
       snapdev: visible
