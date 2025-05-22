@@ -1,0 +1,19 @@
+---
+# defaults file for roles/smb-setup
+samba_users: []
+# - name: {{ smb_user }}
+#   password: {{ smb_user_password }}
+
+smb_shares: []
+# = name: dfsroot
+#   mountpoint: /shares/dfsroot
+#   dfsroot: true
+#   group: {{ write_group }}
+#   
+# 
+# 
+# 
+# 
+# 
+# 
+# 

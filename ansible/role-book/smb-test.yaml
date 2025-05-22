@@ -1,0 +1,4 @@
+- name: Host smb server
+  hosts: servers
+  roles:
+    - smb-setup
