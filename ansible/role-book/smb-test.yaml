@@ -1,4 +1,6 @@
 - name: Host smb server
   hosts: servers
+  vars_files:
+    vars/smb-info.yml
   roles:
     - smb-setup

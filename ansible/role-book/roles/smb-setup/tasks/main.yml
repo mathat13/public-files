@@ -7,13 +7,62 @@
     name: samba
     state: present
 
-# Add write access group
+# Add smb share write access group
+
+- name: Ensure group "smbwriters" exists
+  become: true
+  ansible.builtin.group:
+    name: smbwriters
+    state: present
+  tags: system
+
 # Add samba system user
-# Add samba user with password
+
+- name: Add the system user 'velcro' for write access to smb shares
+  become: true
+  ansible.builtin.user:
+    name: velcro
+    shell: /bin/bash
+    groups: smbwriters
+    append: yes
+  tags: system
+
+# Add samba user
+
+- name: shell - create samba users
+  become: true
+  ansible.builtin.shell: >
+    set -e -o pipefail
+    && (pdbedit --user='{{ item.name }}' 2>&1 > /dev/null)
+    || (echo '{{ item.password }}'; echo '{{ item.password }}')
+    | smbpasswd -s -a '{{ item.name }}'
+  args:
+    executable: /bin/bash
+  register: samba_create_users
+  changed_when: "'Added user' in samba_create_users.stdout"
+  loop: "{{ samba_users }}"
+  no_log: true
+  tags: smbusers
+
+# Add smb password
+
+- name: shell - set samba passwords correctly
+  become: true
+  ansible.builtin.shell: >
+    set -e -o pipefail
+    && (smbclient -U '{{ item.name }}'%'{{ item.password }}' -L 127.0.0.1 2>&1 > /dev/null)
+    || (echo '{{ item.password }}'; echo '{{ item.password }}')
+    | smbpasswd '{{ item.name }}'
+  args:
+    executable: /bin/bash
+  register: samba_verify_users
+  changed_when: "'New SMB password' in samba_verify_users.stdout"
+  loop: "{{ samba_users }}"
+  no_log: true
+  tags: smbusers
+
 # Permission folder correctly for group access
 # Add "public: yes" to smb.conf for guest read permissions
-
-
 
 - name: Enable and start samba service
   become: true
