@@ -1,0 +1,18 @@
+---
+- name: Verify smb.conf exists
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Stat smb.conf
+      stat:
+        path: /etc/smb.conf
+      register: smbconf
+
+    - name: Pretty-print the output
+      debug:
+        var: smbconf
+
+    - name: Assert smb.conf is present
+      assert:
+        that:
+          - smbconf.stat.exists
