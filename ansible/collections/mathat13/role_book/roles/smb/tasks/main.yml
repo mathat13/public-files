@@ -1,12 +1,23 @@
 ---
-- name: Stat smb.conf
-  stat:
-    path: /etc/smb.conf
-  register: smbconf
+#- name: Install samba server
+#  become: true
+#  package:
+#    name: samba
+#    state: present
+#    update_cache: true
 
-- name: Create smb.conf if not already created
+- name: Ensure group "smbwriters" exists
   become: true
-  ansible.builtin.file:
-    path: /etc/smb.conf
-    state: touch
-  when: not smbconf.stat.exists
+  ansible.builtin.group:
+    name: smbwriters
+    state: present
+
+- name: Add the system user 'velcro' for write access to smb shares
+  become: true
+  ansible.builtin.user:
+    name: velcro
+    shell: /bin/bash
+    groups: smbwriters
+    append: yes
+
+

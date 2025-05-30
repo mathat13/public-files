@@ -1,18 +1,51 @@
 ---
-- name: Verify smb.conf exists
+#- name: Verify packages are installed correctly
+#  hosts: all
+#  gather_facts: false
+#  tasks:
+#    - name: Gather the package facts
+#      ansible.builtin.package_facts:
+#        manager: auto
+#
+#    - name: Check samba in packages
+#      assert:
+#        that:
+#          - "'samba' in ansible_facts.packages"
+
+- name: Verify system user created and in correct group
   hosts: all
   gather_facts: false
   tasks:
-    - name: Stat smb.conf
-      stat:
-        path: /etc/smb.conf
-      register: smbconf
+    - name: Get list of groups
+      ansible.builtin.command: getent group
+      register: group_list
 
-    - name: Pretty-print the output
+    - name: Get list of users
+      ansible.builtin.command: cat /etc/passwd
+      register: user_list
+
+    - name: Get groups user is a part of
+      ansible.builtin.command: groups velcro
+      register: user_groups
+
+    - name: list command attributes
       debug:
-        var: smbconf
-
-    - name: Assert smb.conf is present
+        var:
+          user_list
+    
+    - name: Check group created successfully
       assert:
         that:
-          - smbconf.stat.exists
+          - "'smbwriters' in group_list.stdout"
+
+    - name: Check user created successfully
+      assert:
+        that:
+          - "'velcro' in user_list.stdout"
+
+    - name: Check user in expected group
+      assert:
+        that:
+          - "'smbwriters' in user_groups.stdout"
+
+# Add idempotence to commands to get groups, users, and user groups

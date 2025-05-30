@@ -8,8 +8,6 @@ platforms:
     image: geerlingguy/docker-ubuntu2004-ansible
     privileged: true
     pre_build_image: true
-    dns_servers:
-      - 8.8.8.8
 provisioner:
   name: ansible
   lint: |

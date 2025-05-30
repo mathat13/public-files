@@ -1,0 +1,12 @@
+---
+- name: Stat smb.conf
+  stat:
+    path: /etc/smb.conf
+  register: smbconf
+
+- name: Create smb.conf if not already created
+  become: true
+  ansible.builtin.file:
+    path: /etc/smb.conf
+    state: touch
+  when: not smbconf.stat.exists
