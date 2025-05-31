@@ -19,19 +19,18 @@
     - name: Get list of groups
       ansible.builtin.command: getent group
       register: group_list
+      changed_when: false
 
     - name: Get list of users
-      ansible.builtin.command: cat /etc/passwd
+      ansible.builtin.command: getent passwd
       register: user_list
+      changed_when: false
 
     - name: Get groups user is a part of
       ansible.builtin.command: groups velcro
       register: user_groups
+      changed_when: false
 
-    - name: list command attributes
-      debug:
-        var:
-          user_list
     
     - name: Check group created successfully
       assert:
@@ -48,4 +47,8 @@
         that:
           - "'smbwriters' in user_groups.stdout"
 
-# Add idempotence to commands to get groups, users, and user groups
+# Add vars to converge.yml like in the smb role online
+# Add vault variables for passwords and the like
+# Add all pre-made tasks to the role
+# Add prepare to update the apt-cache
+# 
