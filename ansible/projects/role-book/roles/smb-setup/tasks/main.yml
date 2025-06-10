@@ -1,13 +1,15 @@
 ---
 # tasks file for roles/smb-setup
 
+# Pulled
+
 - name: Install samba server
   become: true
   package:
     name: samba
     state: present
 
-# Add smb share write access group
+# Add smb share write access group (Pulled)
 
 - name: Ensure group "smbwriters" exists
   become: true
@@ -16,7 +18,7 @@
     state: present
   tags: system
 
-# Add samba system user
+# Add samba system user (Pulled)
 
 - name: Add the system user 'velcro' for write access to smb shares
   become: true

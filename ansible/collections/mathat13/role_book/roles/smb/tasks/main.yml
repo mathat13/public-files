@@ -1,23 +1,36 @@
 ---
-#- name: Install samba server
-#  become: true
-#  package:
-#    name: samba
-#    state: present
-#    update_cache: true
+- name: Install samba server
+  become: true
+  package:
+    name: samba
+    state: present
+    update_cache: true
 
-- name: Ensure group "smbwriters" exists
+- name: smb - Ensure group "smbwriters" exists
   become: true
   ansible.builtin.group:
     name: smbwriters
     state: present
 
-- name: Add the system user 'velcro' for write access to smb shares
+- name: smb - Add the system user 'velcro' for write access to smb shares
   become: true
   ansible.builtin.user:
     name: velcro
     shell: /bin/bash
     groups: smbwriters
     append: yes
+
+- name: smb - create samba users
+  become: true
+  ansible.builtin.shell: >
+    set -e -o pipefail
+    && (pdbedit --user='{{ item.name }}' 2>&1 > /dev/null)
+    || (echo '{{ item.password }}'; echo '{{ item.password }}')
+    | smbpasswd -s -a '{{ item.name }}'
+  args:
+    executable: /bin/bash
+  register: samba_create_users
+  changed_when: "'Added user' in samba_create_users.stdout"
+  loop: "{{ samba_users }}"
 
 
