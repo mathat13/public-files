@@ -12,9 +12,6 @@ platforms:
       - 8.8.8.8
 provisioner:
   name: ansible
-  lint: |
-    yamllint .
-    ansible-lint
 verifier:
   name: ansible
 

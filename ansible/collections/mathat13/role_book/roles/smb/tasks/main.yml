@@ -4,7 +4,6 @@
   package:
     name: samba
     state: present
-    update_cache: true
 
 - name: smb - Ensure group "smbwriters" exists
   become: true
@@ -32,5 +31,3 @@
   register: samba_create_users
   changed_when: "'Added user' in samba_create_users.stdout"
   loop: "{{ samba_users }}"
-
-

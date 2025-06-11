@@ -47,8 +47,17 @@
         that:
           - "'smbwriters' in user_groups.stdout"
 
-# Add vars to converge.yml like in the smb role online
-# Add vault variables for passwords and the like
-# Add all pre-made tasks to the role
-# Add prepare to update the apt-cache
-# 
+- name: Verify smb user set up correctly
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: smb user database
+      ansible.builtin.shell: 'pdbedit -L'
+      register: smb_user_db
+      changed_when: false
+
+    - name: check all users in smb_user_db
+      assert:
+        that:
+          - "{{ item.name }} in smb_user_db.stdout"
+      loop: "{{ samba_users }}"
