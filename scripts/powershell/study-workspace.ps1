@@ -4,24 +4,29 @@ $firefoxpath = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\Current
 
 start-process $firefoxpath
 
-
 # VSCODE
-# Assumes only one vscode installation on machine, there are 4 types though
+# Get registry paths for vscode installations
 $vscode = Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall' |
     ForEach-Object { Get-ItemProperty $_.PSPath } |
     Where-Object { $_.DisplayName -like 'Microsoft Visual Studio Code' }
 
-start-process $vscode.displayicon
+# Executes if only one installation present on machine, skips otherwise.
+if ( $vscode -isnot [Array] ) {
+    start-process $vscode.displayicon
+}
+else {
+    write-host "Multiple VSCode installations present on machine, skipping."
+}
 
 # WSL
 # works
-function Test-App {
-    param([string]$App)
-    return [bool](Get-Command $App -ErrorAction SilentlyContinue)
+function Test-Command {
+    param([string]$Command)
+    return [bool](Get-Command $Command -ErrorAction SilentlyContinue)
 }
 
-if ((Test-App -App "ubuntu") -and (Test-App -App "wt")) {
-    wt -- ubuntu
+if ((Test-Command -Command "ubuntu") -and (Test-Command -Command "wt")) {
+    wt --maximized -- ubuntu
 }
 else {
     Write-Host "windows terminal or ubuntu not found, skipping."
