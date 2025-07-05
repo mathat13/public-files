@@ -9,7 +9,7 @@ function Get-ProgramRegistryKey {
                         'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\',
                         'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall'
                         ),
-        # Can provide blank value to show all registry keys at given RegistryPath, with properties
+        # Can provide blank value to get the list of registry keys at given RegistryPath
         [string] $Name
     )
 
@@ -19,6 +19,7 @@ function Get-ProgramRegistryKey {
             # Extract all properties of registry keys that contain the Name and store as registry key
             $regkeys | Where-Object {
                 $values = (Get-ItemProperty $_.PSPath)
+                # Check common registry values to store name of application
                 $values.DisplayName -like "*$Name*" -or $values.'(default)' -like "*$Name*" }
         }
         else {Write-Host "Path: $path not found, skipping."}
@@ -27,12 +28,15 @@ function Get-ProgramRegistryKey {
 
 function Get-RegistryValue {
     # $(Get-ProgramRegistryKey -Name "Microsoft Visual Studio Code").Name gives full registry path, could possibly pass this here and link up both functions
+    # Would need a path converter intermediate function to convert HKEY_LOCAL_MACHINE to HKLM: etc
     param (
         [String] $KeyString,
         [string] $Value
         )
 
         $registrykey = Get-Item $KeyString
+        # Alternative to below:
+        # $registrykey.PSPath | Get-ItemPropertyValue -Name $Value
         $(Get-ItemProperty $registrykey.PSPath).$Value
 }
 
