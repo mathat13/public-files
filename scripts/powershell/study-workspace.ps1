@@ -40,24 +40,28 @@ function Get-RegistryValue {
         $(Get-ItemProperty $registrykey.PSPath).$Value
 }
 
+function Test-Command {
+    param(
+        [string] $Command
+        )
+    return [bool](Get-Command $Command -ErrorAction SilentlyContinue)
+}
+
 # FIREFOX
 $firefoxpath = Get-RegistryValue -Key "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\firefox.exe" -Value '(default)'
-start-process $firefoxpath
+start-process $firefoxpath -WindowStyle ([System.Diagnostics.ProcessWindowStyle]::Maximized)
 
 # VSCODE
 # Get registry paths for vscode installations
 $vscodepath = Get-RegistryValue -Key "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{EA457B21-F73E-494C-ACAB-524FDE069978}_is1" -Value 'DisplayIcon'
-start-process $vscodepath
+start-process $vscodepath -WindowStyle ([System.Diagnostics.ProcessWindowStyle]::Maximized)
 
 # WSL
-# works
-function Test-Command {
-    param([string]$Command)
-    return [bool](Get-Command $Command -ErrorAction SilentlyContinue)
-}
-
+# No decent registry values so have to resort to directly running wt command
 if ((Test-Command -Command "ubuntu") -and (Test-Command -Command "wt")) {
-    wt --maximized -- ubuntu
+    # Escape ; with backtick to allow wt to interpret backtick and powershell to skip
+    # required for sequences of commands to run on same window created with initial command
+    wt --maximized -p "Ubuntu" `; new-tab -p "Powershell" `; focus-tab -t 0
 }
 else {
     Write-Host "windows terminal or ubuntu not found, skipping."
@@ -68,7 +72,10 @@ else {
 # to registry as displayicon on each machine with cherrytree installed
 # would work but not ideal as would probably have to check if shortcut exists before using...
 # Maybe add key at install
-Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall' |
-    ForEach-Object { Get-ItemProperty $_.PSPath } |
-    Where-Object { $_.Name -like '*cherrytree*' } |
-    Select-Object Name, InstallLocation, DisplayIcon
+# Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall' |
+#     ForEach-Object { Get-ItemProperty $_.PSPath } |
+#     Where-Object { $_.Name -like '*cherrytree*' } |
+#     Select-Object Name, InstallLocation, DisplayIcon
+
+# $CurrentProcessID = [System.Diagnostics.Process]::GetCurrentProcess().ID
+# stop-process $CurrentProcessID
