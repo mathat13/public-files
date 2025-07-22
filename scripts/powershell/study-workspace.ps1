@@ -53,19 +53,28 @@ start-process $firefoxpath -WindowStyle ([System.Diagnostics.ProcessWindowStyle]
 
 # VSCODE
 # Get registry paths for vscode installations
-$vscodepath = Get-RegistryValue -Key "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{EA457B21-F73E-494C-ACAB-524FDE069978}_is1" -Value 'DisplayIcon'
-start-process $vscodepath -WindowStyle ([System.Diagnostics.ProcessWindowStyle]::Maximized)
+if ((Test-Command -Command "code")) {
+    code
+}
+else {
+    Write-Host "code command not found, falling back to registry installation."
+    $vscodepath = Get-RegistryValue -Key "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{EA457B21-F73E-494C-ACAB-524FDE069978}_is1" -Value 'DisplayIcon'
+    start-process $vscodepath -WindowStyle ([System.Diagnostics.ProcessWindowStyle]::Maximized)
+}
 
 # WSL
 # No decent registry values so have to resort to directly running wt command
 if ((Test-Command -Command "ubuntu") -and (Test-Command -Command "wt")) {
-    # Escape ; with backtick to allow wt to interpret backtick and powershell to skip
+    # Escape ; with backtick to allow wt to interpret as semicolon and powershell to skip
     # required for sequences of commands to run on same window created with initial command
     wt --maximized -p "Ubuntu" `; new-tab -p "Powershell" `; focus-tab -t 0
 }
 else {
     Write-Host "windows terminal or ubuntu not found, skipping."
 }
+
+# Kill current shell
+Stop-Process -Id $PID
 
 # CHERRYTREE
 # No displayicon path  in registry, possibly need to add path to shortcut created on start menu
