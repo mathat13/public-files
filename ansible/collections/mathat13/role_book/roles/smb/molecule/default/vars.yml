@@ -1,0 +1,4 @@
+---
+samba_users:
+  - name: velcro
+    password: ovelcr

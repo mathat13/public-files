@@ -5,6 +5,20 @@
     name: samba
     state: present
 
+- name: Install smbclient command
+  become: true
+  package:
+    name: smbclient
+    state: present
+
+# This is for molecule (with docker) only, add conditional to run regular command also
+- name: Start smbd manually
+  become: true
+  command: service smbd start
+  async: 10
+  poll: 0
+  changed_when: false
+
 - name: smb - Ensure group "smbwriters" exists
   become: true
   ansible.builtin.group:
@@ -31,3 +45,21 @@
   register: samba_create_users
   changed_when: "'Added user' in samba_create_users.stdout"
   loop: "{{ samba_users }}"
+
+- name: shell - set samba passwords correctly
+  become: true
+  ansible.builtin.shell: >
+    set -e -o pipefail
+    && (smbclient -U '{{ item.name }}'%'{{ item.password }}' -L 127.0.0.1 2>&1 > /dev/null)
+    || (echo '{{ item.password }}'; echo '{{ item.password }}')
+    | smbpasswd '{{ item.name }}'
+  args:
+    executable: /bin/bash
+  register: samba_verify_users
+  changed_when: "'New SMB password' in samba_verify_users.stdout"
+  loop: "{{ samba_users }}"
+  no_log: true
+  
+# - name: Print list of attributes of samba_verify_users
+#   debug:
+#     var: samba_verify_users

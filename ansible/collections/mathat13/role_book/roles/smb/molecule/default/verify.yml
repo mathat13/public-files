@@ -50,6 +50,8 @@
 - name: Verify smb user set up correctly
   hosts: all
   gather_facts: false
+  vars_files:
+    - vars.yml
   tasks:
     - name: smb user database
       ansible.builtin.shell: 'pdbedit -L'
@@ -59,5 +61,5 @@
     - name: check all users in smb_user_db
       assert:
         that:
-          - "{{ item.name }} in smb_user_db.stdout"
+          - "item.name in smb_user_db.stdout"
       loop: "{{ samba_users }}"

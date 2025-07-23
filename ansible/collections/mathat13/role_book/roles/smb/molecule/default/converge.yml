@@ -3,7 +3,5 @@
   hosts: all
   roles:
     - role: mathat13.role_book.smb
-  vars:
-    samba_users:
-      - name: velcro
-        password: ovelcr
+  vars_files:
+    - vars.yml
