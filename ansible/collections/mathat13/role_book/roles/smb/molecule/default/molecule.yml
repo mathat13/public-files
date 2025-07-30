@@ -5,7 +5,7 @@ driver:
   name: docker
 platforms:
   - name: instance
-    image: geerlingguy/docker-ubuntu2004-ansible
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu2204}-ansible:latest"
     privileged: true
     pre_build_image: true
     dns_servers:

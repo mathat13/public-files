@@ -2,18 +2,17 @@
 ---
 # defaults file for roles/smb
 samba_users: []
-# - name: {{ smb_user }}
-#   password: {{ smb_user_password }}
+# - name: velcro
+#   password: ovelcr
 
 smb_shares: []
-# = name: dfsroot
-#   mountpoint: /shares/dfsroot
-#   dfsroot: true
-#   group: {{ write_group }}
-#   
-# 
-# 
-# 
+# - name: testshare
+#   path: /testshare
+#   directory_mode: 0770
+#   create_mode: 0660
+# - name: defaultstest
+#   path: /defaultstest
+#   Add minimal shares based on smb.conf template for testing with molecule
 # 
 # 
 # 

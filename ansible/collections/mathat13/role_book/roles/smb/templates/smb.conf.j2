@@ -1,0 +1,66 @@
+[global]
+
+## Browsing/Identification ###
+
+# Change this to the workgroup/NT-domain name your Samba server will part of
+   workgroup = {{ samba_workgroup }}
+
+#...
+
+{% if dfs_root_server is defined %}
+host msdfs = yes
+{% endif %}
+
+# Default share settings
+  directory mode = {{ default_directory_mode|default('0775') }}
+  create mode = {{ default_create_mode|default('0665') }}
+  browseable = {{ browseable|default('yes') }}
+  read only = {{  read_only|default('no') }}
+
+{% if share.valid_users is defined %}
+  valid users = {{ share.valid_users }}
+{% endif %}
+
+{% if share.force_user is defined %}
+  force user = {{ share.force_user }}
+{% endif %}
+
+
+
+{% if samba_shares|length > 0 %}
+
+#======================= Share Definitions =======================
+
+{% for share in samba_shares %}
+[{{ share.name }}]
+
+{% if share.dfsroot is defined %}
+  msdfsroot = yes
+{% endif %}
+
+{% if share.comment is defined %}
+  comment = {{ share.comment }}
+{% endif %}
+
+{% if share.directory_mode is defined %}
+  directory mode = {{ share.directory_mask }}
+{% endif %}
+
+{% if share.create_mode is defined %}
+  create mode = {{ share.create_mode }}
+{% endif %}
+
+{% if share.path is defined %}
+  path = {{ share.path }}
+{% endif %}
+
+{% if share.path is defined %}
+  path = {{ share.path }}
+{% endif %}
+
+{% if share.path is defined %}
+  path = {{ share.path }}
+{% endif %}
+
+{% endfor %}
+{% endif %}
