@@ -63,3 +63,13 @@
 # - name: Print list of attributes of samba_verify_users
 #   debug:
 #     var: samba_verify_users
+
+- name: config - generate smb.conf from template
+  become: true
+  template:
+    src: smb.conf.j2
+    dest: /etc/samba/smb.conf
+    owner: root
+    group: root
+    mode: '0644'
+#  notify: Restart smbd

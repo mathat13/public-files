@@ -5,15 +5,26 @@ samba_users: []
 # - name: velcro
 #   password: ovelcr
 
-smb_shares: []
-# - name: testshare
-#   path: /testshare
-#   directory_mode: 0770
-#   create_mode: 0660
-# - name: defaultstest
-#   path: /defaultstest
-#   Add minimal shares based on smb.conf template for testing with molecule
-# 
-# 
-# 
-# 
+samba_shares: []
+# - name: test1
+#   comment: "back to it"
+#   path: /test1
+#   directory_mask: 0770
+#   create_mask: 0660
+#   dfs_root_folder: true
+#   browseable: true
+#   read_only: true
+#   valid_users: acrobat
+#   force_user: acrobat
+#   force_group: acrobat
+
+samba_settings: []
+# samba_workgroup: smelly
+# dfs_root_server: 
+# directory_mask: 
+# create_mask: 
+# browseable: 
+# read_only: 
+# valid_users: 
+# force_user: 
+# force_group: 

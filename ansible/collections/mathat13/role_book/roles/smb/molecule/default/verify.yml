@@ -63,3 +63,26 @@
         that:
           - "item.name in smb_user_db.stdout"
       loop: "{{ samba_users }}"
+
+  
+- name: config - verify config with testparm
+  hosts: all
+  gather_facts: false
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: config - get testparm output
+      ansible.builtin.shell: 'testparm /etc/samba/smb.conf'
+      register: config_validation
+      changed_when: false
+
+    - name: config - check testparm validates file
+      assert:
+        that:
+          - 'config_validation.rc == 0'
+        fail_msg: "Bad config."
+        success_msg: "Config validated successfully."
+
+#    - name: config - print config return variable
+#      debug:
+#        var: config_validation
