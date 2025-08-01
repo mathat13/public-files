@@ -2,21 +2,21 @@
 ---
 # vars file for roles/smb
 
-samba_shares:
- - name: test1
-   path: /test1
-   comment: back to it
-   directory_mask: 0770
-   create_mask: 0660
- - name: test2
-   path: /test2
-   browseable: true
-   read_only: true
-   valid_users: acrobat
-   force_user: acrobat
-
-samba_settings:
-  samba_workgroup: smelly
-  default_directory_mask: 0775
-  default_create_mask: 0664
-  default_browseable: false
+# samba_shares:
+#  - name: test1
+#    path: /test1
+#    comment: back to it
+#    directory_mask: 0770
+#    create_mask: 0660
+#  - name: test2
+#    path: /test2
+#    browseable: true
+#    read_only: true
+#    valid_users: acrobat
+#    force_user: acrobat
+# 
+# samba_settings:
+#   samba_workgroup: smelly
+#   default_directory_mask: 0775
+#   default_create_mask: 0664
+#   default_browseable: false

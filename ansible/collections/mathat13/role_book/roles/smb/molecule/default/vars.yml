@@ -12,7 +12,6 @@ samba_shares:
  - name: test2
    path: /test2
    browseable: true
-   read_only: true
    valid_users: acrobat
    force_user: acrobat
 
@@ -20,4 +19,4 @@ samba_settings:
   samba_workgroup: smelly
   directory_mask: "0775"
   create_mask: "0664"
-  browseable: false
+  browseable: true
