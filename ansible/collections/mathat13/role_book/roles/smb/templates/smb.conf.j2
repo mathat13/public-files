@@ -2,14 +2,50 @@
 
 ## Browsing/Identification ###
 
+
 # Change this to the workgroup/NT-domain name your Samba server will part of
-   workgroup = {{ samba_settings.samba_workgroup | default('default') }}
+  workgroup = {{ samba_workgroup }}
+
+#### Networking ####
 
 #...
 
-{% if dfs_root_server is defined %}
-  host msdfs = yes
-{% endif %}
+#### Debugging/Accounting ####
+
+# This tells Samba to use a separate log file for each machine
+# that connects
+   log file = {{ log_file }}
+
+# Cap the size of the individual log files (in KiB).
+   max log size = {{ max_log_size }}
+
+# We want Samba to only log to /var/log/samba/log.{smbd,nmbd}.
+# Append syslog@1 if you want important messages to be sent to syslog too.
+   logging = {{ logging_type }}
+
+# Do something sensible when Samba crashes: mail the admin a backtrace
+   panic action = {{ panic_action }}
+
+####### Authentication #######
+
+# Server role. Defines in which mode Samba will operate. Possible
+# values are "standalone server", "member server", "classic primary
+# domain controller", "classic backup domain controller", "active
+# directory domain controller".
+#
+# Most people will want "standalone server" or "member server".
+# Running as "active directory domain controller" will require first
+# running "samba-tool domain provision" to wipe databases and create a
+# new domain.
+   server role = {{ server_role }}
+
+# This option controls how unsuccessful authentication attempts are mapped
+# to anonymous connections
+   map to guest = {{ map_to_guest }}
+
+#...
+
+  host msdfs = {{ make_dfs_server | ternary('yes', 'no') }}
 
 # Default share settings
 
@@ -20,10 +56,10 @@
   create mask = {{ samba_settings.create_mask }}
 {% endif %}
 {% if samba_settings.browseable is defined %}
-  browseable = {{ samba_settings.browseable }}
+  browseable = {{ samba_settings.browseable | ternary('yes', 'no') }}
 {% endif %}
 {% if samba_settings.read_only is defined %}
-  read only = {{ samba_settings.read_only }}
+  read only = {{ samba_settings.read_only | ternary('yes', 'no') }}
 {% endif %}
 {% if samba_settings.valid_users is defined %}
   valid users = {{ samba_settings.valid_users }}
@@ -44,7 +80,7 @@
 {% for share in samba_shares %}
 [{{ share.name }}]
 {% if share.dfs_root_folder is defined %}
-  msdfsroot = yes
+  msdfsroot = {{ dfs_root_folder | ternary('yes', 'no') }}
 {% endif %}
 {% if share.path is defined %}
   path = {{ share.path }}
@@ -59,7 +95,7 @@
   create mask = {{ share.create_mask }}
 {% endif %}
 {% if share.browseable is defined %}
-  browseable = {{ share.browseable }}
+  browseable = {{ share.browseable | ternary('yes', 'no') }}
 {% endif %}
 {% if share.valid_users is defined %}
   valid users = {{ share.valid_users }}
@@ -71,7 +107,7 @@
   force group = {{ share.force_group }}
 {% endif %}
 {% if share.read_only is defined %}
-  read only = {{ share.read_only }}
+  read only = {{ share.read_only | ternary('yes', 'no') }}
 {% endif %}
 
 {% endfor %}

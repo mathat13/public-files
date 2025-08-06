@@ -37,11 +37,11 @@
 
 - name: smb - create samba users
   become: true
-  ansible.builtin.shell: >
-    set -e -o pipefail
-    && (pdbedit --user='{{ item.name }}' 2>&1 > /dev/null)
-    || (echo '{{ item.password }}'; echo '{{ item.password }}')
-    | smbpasswd -s -a '{{ item.name }}'
+  ansible.builtin.shell: |
+    set -e -o pipefail &&
+    if ! pdbedit --user='{{ item.name }}' 2>&1 > /dev/null; then
+      (echo '{{ item.password }}'; echo '{{ item.password }}') | smbpasswd -s -a '{{ item.name }}'
+    fi
   args:
     executable: /bin/bash
   register: samba_create_users
@@ -50,11 +50,11 @@
 
 - name: shell - set samba passwords correctly
   become: true
-  ansible.builtin.shell: >
-    set -e -o pipefail
-    && (smbclient -U '{{ item.name }}'%'{{ item.password }}' -L 127.0.0.1 2>&1 > /dev/null)
-    || (echo '{{ item.password }}'; echo '{{ item.password }}')
-    | smbpasswd '{{ item.name }}'
+  ansible.builtin.shell: |
+    set -e -o pipefail &&
+    if ! smbclient -U '{{ item.name }}'%'{{ item.password }}' -L 127.0.0.1 2>&1 > /dev/null; then
+      (echo '{{ item.password }}'; echo '{{ item.password }}') | smbpasswd '{{ item.name }}'
+    fi
   args:
     executable: /bin/bash
   register: samba_verify_users
