@@ -26,6 +26,8 @@
 # Do something sensible when Samba crashes: mail the admin a backtrace
    panic action = {{ panic_action }}
 
+   log level = {{ samba_log_level }}
+
 ####### Authentication #######
 
 # Server role. Defines in which mode Samba will operate. Possible
@@ -44,46 +46,26 @@
    map to guest = {{ map_to_guest }}
 
 #...
-
-  host msdfs = {{ make_dfs_server | ternary('yes', 'no') }}
+{% if make_dfs_server is defined %}
+  host msdfs = yes
+{% endif %}
 
 # Default share settings
 
-{% if samba_settings.directory_mask is defined %}
-  directory mask = {{ samba_settings.directory_mask }}
-{% endif %}
-{% if samba_settings.create_mask is defined %}
-  create mask = {{ samba_settings.create_mask }}
-{% endif %}
-{% if samba_settings.browseable is defined %}
-  browseable = {{ samba_settings.browseable | ternary('yes', 'no') }}
-{% endif %}
-{% if samba_settings.read_only is defined %}
-  read only = {{ samba_settings.read_only | ternary('yes', 'no') }}
-{% endif %}
-{% if samba_settings.valid_users is defined %}
-  valid users = {{ samba_settings.valid_users }}
-{% endif %}
-{% if samba_settings.force_user is defined %}
-  force user = user
-{% endif %}
-{% if samba_settings.force_group is defined %}
-  force group = group
-{% endif %}
-
-
+  directory mask = {{ directory_mask }}
+  create mask = {{ create_mask }}
+  browseable = {{ browseable | ternary('yes', 'no') }}
+  read only = {{ read_only | ternary('yes', 'no') }}
 
 {% if samba_shares|length > 0 %}
 
-#======================= Share Definitions =======================
+####### Share Definitions #######
 
 {% for share in samba_shares %}
 [{{ share.name }}]
+  path = {{ share.path|default([samba_shares_root,share.name]|join('/')) }}
 {% if share.dfs_root_folder is defined %}
-  msdfsroot = {{ dfs_root_folder | ternary('yes', 'no') }}
-{% endif %}
-{% if share.path is defined %}
-  path = {{ share.path }}
+  msdfsroot = yes
 {% endif %}
 {% if share.comment is defined %}
   comment = {{ share.comment }}
@@ -94,11 +76,14 @@
 {% if share.create_mask is defined %}
   create mask = {{ share.create_mask }}
 {% endif %}
+{% if share.public is defined %}
+  public = {{ share.public | ternary('yes', 'no') }}
+{% endif %}
 {% if share.browseable is defined %}
   browseable = {{ share.browseable | ternary('yes', 'no') }}
 {% endif %}
 {% if share.valid_users is defined %}
-  valid users = {{ share.valid_users }}
+  valid users = {{ share.valid_users | join(',') }}
 {% endif %}
 {% if share.force_user is defined %}
   force user = {{ share.force_user }}
@@ -111,4 +96,10 @@
 {% endif %}
 
 {% endfor %}
+{% endif %}
+
+{% if include_file is defined %}
+####### Other #######
+
+  include = {{ include_file }}
 {% endif %}

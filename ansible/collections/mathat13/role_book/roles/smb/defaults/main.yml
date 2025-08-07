@@ -3,15 +3,22 @@
 # defaults file for roles/smb
 
 samba_workgroup: 'WORKGROUP'
-server_role: 'standalone server'
 log_file: '/var/log/samba/log.%m'
 max_log_size: 5000
 logging_type: 'file'
+samba_log_level: 0
 panic_action:  '/usr/share/samba/panic-action %d'
+server_role: 'standalone server'
 map_to_guest: 'never'
-make_dfs_server: false
-
-
+# make_dfs_server:
+directory_mask: 0775
+create_mask: 0664
+browseable: true
+read_only: false
+# valid_users: 
+# force_user: 
+# force_group:
+samba_shares_root: '/srv/shares' 
 
 samba_users: []
 # - name: velcro
@@ -30,13 +37,4 @@ samba_shares: []
 #   force_user: acrobat
 #   force_group: acrobat
 
-samba_settings:
-# dfs_root_server: 
-# directory_mask: 
-# create_mask: 
-# browseable: 
-# read_only: 
-# valid_users: 
-# force_user: 
-# force_group: 
-
+# include_file:
