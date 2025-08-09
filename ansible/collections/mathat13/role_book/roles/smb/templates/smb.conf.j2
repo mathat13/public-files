@@ -41,9 +41,9 @@
 # new domain.
    server role = {{ server_role }}
 
-# This option controls how unsuccessful authentication attempts are mapped
-# to anonymous connections
-   map to guest = {{ map_to_guest }}
+{% if samba_username_map %}
+  username map = {{ samba_username_map_file }}
+{% endif %}
 
 #...
 {% if make_dfs_server is defined %}

@@ -8,7 +8,7 @@
 - name: Enable and start required services (systemd)
   become: true
   ansible.builtin.systemd:
-    name: smbd, smbclient
+    name: smbd
     enabled: yes
     state: started
   when: not running_in_molecule | default(false)
@@ -30,10 +30,11 @@
 - name: smb - Add the system user 'velcro' for write access to smb shares
   become: true
   ansible.builtin.user:
-    name: velcro
+    name: "{{ item.name }}"
     shell: /bin/bash
     groups: smbwriters
     append: yes
+  loop: "{{ samba_users }}"
 
 - name: smb - create samba users
   become: true
@@ -66,12 +67,21 @@
   become: true
   template:
     src: smb.conf.j2
-    dest: /etc/samba/smb.conf
+    dest: "{{ samba_configuration }}"
+    validate: "testparm -s %s"
     owner: root
     group: root
     mode: "0644"
-  notify: "restart smbd"
+  notify: "restart samba services"
 
-# - name: Debug samba vars
+- name: Create username map file if needed
+  ansible.builtin.template:
+    dest: "{{ samba_username_map_file }}"
+    src: smbusers.j2
+    mode: '0644'
+  notify: "restart samba services"
+  when: samba_username_map
+
+# - name: Debug var
 #   debug:
 #     var: samba_settings

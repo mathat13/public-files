@@ -7,7 +7,7 @@
     name: smbd
     state: restarted
   when: not running_in_molecule | default(false) 
-  listen: "restart smbd"
+  listen: "restart samba services"
 
 - name: Restart smbd (molecule)
   become: true
@@ -16,4 +16,4 @@
   poll: 0
   when: running_in_molecule | default(false)
   changed_when: false
-  listen: "restart smbd"
+  listen: "restart samba services" 

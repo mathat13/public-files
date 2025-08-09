@@ -4,16 +4,20 @@ samba_users:
     password: ovelcr
 
 samba_shares:
- - name: test1
-   path: /test1
-   comment: "back to it"
-   directory_mask: "0770"
-   create_mask: "0660"
- - name: test2
-   path: /test2
-   browseable: true
-   valid_users: ["acrobat", "bobby"]
-   force_user: acrobat
+  - name: test1
+    path: /test1
+    comment: "back to it"
+    directory_mask: "0770"
+    create_mask: "0660"
+  - name: test2
+    path: /test2
+    browseable: true
+    valid_users: ["acrobat", "bobby"]
+    force_user: acrobat
+
+samba_username_map:
+  - from: ["billy", "boney", "bender"]
+    to: "benny"
 
 directory_mask: "0775"
 create_mask: "0664"
