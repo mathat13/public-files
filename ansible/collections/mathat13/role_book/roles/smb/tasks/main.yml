@@ -63,6 +63,28 @@
   loop: "{{ samba_users }}"
   no_log: true
 
+- name: Create samba root dir if create_share_dirs is true
+  become: true
+  ansible.builtin.file:
+    path: "{{ samba_shares_root }}"
+    mode: "0775"
+    owner: root
+    group: smbwriters
+    state: directory
+  when: create_share_dirs
+
+- name: Create samba share dirs if create_share_dirs is true
+  become: true
+  ansible.builtin.file:
+    path: "{{ item.path | default([samba_shares_root, item.name] | join('/')) }}"
+    mode: " {{ item.directory_mask | default('0775') }}"
+    owner: "{{ item.force_user | default('root') }}"
+    group: "{{ item.force_group | default('smbwriters') }}"
+    state: directory
+  loop: "{{ samba_shares }}"
+  when: create_share_dirs
+
+
 - name: config - generate smb.conf from template
   become: true
   template:
@@ -82,6 +104,6 @@
   notify: "restart samba services"
   when: samba_username_map
 
-# - name: Debug var
-#   debug:
-#     var: samba_settings
+- name: Debug var
+  debug:
+    var: ansible_facts

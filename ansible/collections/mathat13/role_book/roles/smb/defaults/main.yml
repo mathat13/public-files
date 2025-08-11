@@ -19,6 +19,7 @@ read_only: false
 # force_user: 
 # force_group:
 samba_shares_root: '/srv/shares'
+create_share_dirs: true
 
 samba_users: []
 # - name: velcro

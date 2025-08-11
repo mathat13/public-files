@@ -13,7 +13,7 @@ samba_shares:
     path: /test2
     browseable: true
     valid_users: ["acrobat", "bobby"]
-    force_user: acrobat
+    force_user: velcro
 
 samba_username_map:
   - from: ["billy", "boney", "bender"]
