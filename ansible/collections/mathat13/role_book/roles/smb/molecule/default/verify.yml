@@ -64,12 +64,43 @@
           - "item.name in smb_user_db.stdout"
       loop: "{{ samba_users }}"
 
+- name: Folder creation - Verify that all folders are created correctly
+  hosts: all
+  gather_facts: false
+  vars:
+    samba_dirs: []
+    create_share_dirs: true
+    samba_shares_root: "/srv/shares"
+  vars_files:
+    - vars.yml
   
+  tasks:
+    - name: Fill in samba share path list
+      set_fact:
+        samba_dirs: "{{ samba_dirs + [ item.path  | default([samba_shares_root, item.name] | path_join) ] }}"
+      loop: "{{ samba_shares }}"
+      when: create_share_dirs
+
+    - name: Check existence of each path
+      ansible.builtin.stat:
+        path: "{{ item }}"
+      loop: "{{ samba_dirs }}"
+      register: file_data
+      when: create_share_dirs
+
+    - name: Fail if any path does not exist
+      fail:
+        msg: "One or more Samba dirs are missing: {{ missing_dirs }}"
+      vars:
+        missing_dirs: "{{ file_data.results | selectattr('stat.exists', 'equalto', false) | map(attribute='item') | list }}"
+      when: missing_dirs | length > 0 and create_share_dirs
+
 - name: config - verify config with testparm
   hosts: all
   gather_facts: false
   vars_files:
     - vars.yml
+
   tasks:
     - name: config - get testparm output
       ansible.builtin.shell: 'testparm /etc/samba/smb.conf'
