@@ -81,14 +81,14 @@
       loop: "{{ samba_shares }}"
       when: create_share_dirs
 
-    - name: Check existence of each path
+    - name: Stat each samba share path
       ansible.builtin.stat:
         path: "{{ item }}"
       loop: "{{ samba_dirs }}"
       register: file_data
       when: create_share_dirs
 
-    - name: Fail if any path does not exist
+    - name: Fail if any samba share path does not exist
       fail:
         msg: "One or more Samba dirs are missing: {{ missing_dirs }}"
       vars:

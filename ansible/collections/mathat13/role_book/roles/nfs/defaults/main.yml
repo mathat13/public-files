@@ -1,0 +1,12 @@
+---
+# defaults file for roles/nfs
+
+# Default nfs config location
+nfs_exports_path: "/etc/exports"
+
+# Default config source location
+nfs_config_source: "/configs/storage-server/nfs/exports"
+
+# Default export location
+nfs_share_path: "/exports"
+

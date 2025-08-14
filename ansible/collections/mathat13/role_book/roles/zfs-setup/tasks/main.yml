@@ -1,5 +1,0 @@
----
-# tasks file for roles/zfs-setup
-
-- include_tasks: prerequisites.yml
-- include_tasks: manage_zfs.yml
