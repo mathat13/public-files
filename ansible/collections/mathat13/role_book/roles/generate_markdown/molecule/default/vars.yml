@@ -1,0 +1,27 @@
+---
+readme:
+  role_name: example_role
+  description: "Basic role description"
+  requirements:
+                - grit
+                - determination
+  role_variables:
+                - role_name
+                - description
+                - requirements
+                - role_variables
+                - dependencies
+                - example_playbook
+                - license
+                - author_info
+                - template_source
+                - output_path
+  dependencies:
+                - "Ubuntu system"
+  example_playbook: "---
+                    - name: Converge
+                      hosts: all
+                      roles:
+                        - role: mathat13.role_book.generate_markdown"
+  license: "BSD"
+  author_info: "Smell you later"

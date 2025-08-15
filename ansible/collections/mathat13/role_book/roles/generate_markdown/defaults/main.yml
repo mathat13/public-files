@@ -1,0 +1,15 @@
+#SPDX-License-Identifier: MIT-0
+---
+# defaults file for roles/generate_markdown
+template_source: "readme.md.j2"
+output_path: "/tmp/readme.md"
+
+readme: []
+# role_name: ""
+# description: ""
+# requirements: []
+# role_variables: []
+# dependencies: []
+# example_playbook: ""
+# license: "BSD"
+# author_info: ""
