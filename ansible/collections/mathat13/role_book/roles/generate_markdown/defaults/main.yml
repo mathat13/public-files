@@ -1,8 +1,10 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # defaults file for roles/generate_markdown
+roles_dir: "."
+role: "."
+file_name: "README.md"
 template_source: "readme.md.j2"
-output_path: "/tmp/readme.md"
 
 readme: []
 # role_name: ""
