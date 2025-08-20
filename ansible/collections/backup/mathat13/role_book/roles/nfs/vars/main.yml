@@ -1,0 +1,12 @@
+---
+# vars file for roles/nfs
+nfs_exports:
+  - path: "{{ nfs_share_path }}"
+    clients:
+      - 192.168.1.0/24
+    options:
+      - rw
+      - sync
+      - all_squash
+      - anonuid=1000
+      - anongid=1000

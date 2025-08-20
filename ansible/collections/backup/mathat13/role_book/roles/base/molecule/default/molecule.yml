@@ -1,0 +1,17 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: instance
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu2204}-ansible:latest"
+    privileged: true
+    pre_build_image: true
+    dns_servers:
+      - 8.8.8.8
+provisioner:
+  name: ansible
+verifier:
+  name: ansible
+

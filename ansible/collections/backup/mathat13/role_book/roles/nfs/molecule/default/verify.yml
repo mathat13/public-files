@@ -1,0 +1,8 @@
+---
+- name: Verify /etc/exports exists
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Print list of facts
+      ansible.builtin.debug:
+        var: ansible_facts

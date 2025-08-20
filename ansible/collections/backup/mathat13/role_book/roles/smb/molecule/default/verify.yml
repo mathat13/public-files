@@ -1,0 +1,119 @@
+---
+#- name: Verify packages are installed correctly
+#  hosts: all
+#  gather_facts: false
+#  tasks:
+#    - name: Gather the package facts
+#      ansible.builtin.package_facts:
+#        manager: auto
+#
+#    - name: Check samba in packages
+#      assert:
+#        that:
+#          - "'samba' in ansible_facts.packages"
+
+- name: Verify system user created and in correct group
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Get list of groups
+      ansible.builtin.command: getent group
+      register: group_list
+      changed_when: false
+
+    - name: Get list of users
+      ansible.builtin.command: getent passwd
+      register: user_list
+      changed_when: false
+
+    - name: Get groups user is a part of
+      ansible.builtin.command: groups velcro
+      register: user_groups
+      changed_when: false
+
+    
+    - name: Check group created successfully
+      assert:
+        that:
+          - "'smbwriters' in group_list.stdout"
+
+    - name: Check user created successfully
+      assert:
+        that:
+          - "'velcro' in user_list.stdout"
+
+    - name: Check user in expected group
+      assert:
+        that:
+          - "'smbwriters' in user_groups.stdout"
+
+- name: Verify smb user set up correctly
+  hosts: all
+  gather_facts: false
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: smb user database
+      ansible.builtin.shell: 'pdbedit -L'
+      register: smb_user_db
+      changed_when: false
+
+    - name: check all users in smb_user_db
+      assert:
+        that:
+          - "item.name in smb_user_db.stdout"
+      loop: "{{ samba_users }}"
+
+- name: Folder creation - Verify that all folders are created correctly
+  hosts: all
+  gather_facts: false
+  vars:
+    samba_dirs: []
+    create_share_dirs: true
+    samba_shares_root: "/srv/shares"
+  vars_files:
+    - vars.yml
+  
+  tasks:
+    - name: Fill in samba share path list
+      set_fact:
+        samba_dirs: "{{ samba_dirs + [ item.path  | default([samba_shares_root, item.name] | path_join) ] }}"
+      loop: "{{ samba_shares }}"
+      when: create_share_dirs
+
+    - name: Stat each samba share path
+      ansible.builtin.stat:
+        path: "{{ item }}"
+      loop: "{{ samba_dirs }}"
+      register: file_data
+      when: create_share_dirs
+
+    - name: Fail if any samba share path does not exist
+      fail:
+        msg: "One or more Samba dirs are missing: {{ missing_dirs }}"
+      vars:
+        missing_dirs: "{{ file_data.results | selectattr('stat.exists', 'equalto', false) | map(attribute='item') | list }}"
+      when: missing_dirs | length > 0 and create_share_dirs
+
+- name: config - verify config with testparm
+  hosts: all
+  gather_facts: false
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: config - get testparm output
+      ansible.builtin.shell: 'testparm /etc/samba/smb.conf'
+      register: config_validation
+      changed_when: false
+
+    - name: config - check testparm validates file
+      assert:
+        that:
+          - 'config_validation.rc == 0'
+        fail_msg: "Bad config."
+        success_msg: "Config validated successfully."
+
+#    - name: config - print config return variable
+#      debug:
+#        var: config_validation

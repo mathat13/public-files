@@ -1,0 +1,15 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for roles/generate_markdown
+
+- name: Generate markdown file from chosen template
+  become: true
+  set_fact:
+    output_path: "{{ [ roles_dir, role, file_name ] | path_join | default('.') }}"
+  ansible.builtin.template:
+    src: "{{ template_source }}"
+    dest: "{{ output_path }}"
+
+- name: Debug vars
+  debug:
+    var: output_path

@@ -24,6 +24,6 @@ readme:
                     - name: Converge
                       hosts: all
                       roles:
-                        - role: mathat13.server_builder.generate_markdown"
+                        - role: mathat13.role_book.generate_markdown"
   license: "BSD"
   author_info: "Smell you later"

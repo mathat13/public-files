@@ -1,4 +1,7 @@
 ---
+roles_dir: "{{ playbook_dir }}/../../roles"
+role: "generate_markdown"
+file_name: "README.md"
 template_source: "readme.md.j2"
 readme:
   role_name: generate_markdown
@@ -11,6 +14,7 @@ readme:
                 - roles_dir
                 - role
                 - file_name
+                - output_path
                 - readme.role_name
                 - readme.description
                 - readme.requirements

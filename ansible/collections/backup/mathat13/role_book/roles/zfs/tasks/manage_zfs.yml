@@ -1,0 +1,78 @@
+---
+
+- name: manage_zfs | checking existing zpool(s)
+  ansible.builtin.shell: "zpool list | awk 'FNR >1' | awk '{print $1}'"
+  changed_when: false
+  register: zpools
+  check_mode: no
+  when: zfs_pools is defined
+
+- name: manage_zfs | Gather ZPool Status
+  ansible.builtin.shell: zpool status
+  changed_when: false
+  register: zpool_devices
+  check_mode: no
+  when: zfs_pools is defined
+
+- name: manage_zfs | creating basic zpool(s)
+  become: true
+  ansible.builtin.command: "zpool create {{ '-o '+ item.options.items() |map('join', '=') | join (' -o ') if item.options is defined else '' }} {{ item.name }} {{ item.devices|join (' ') }}"
+  register: zpool_created
+  with_items: "{{ zfs_pools }}"
+  when:
+    - zfs_pools is defined
+    - zfs_create_pools
+    - item.type == "basic"
+    - item.name not in zpools.stdout
+    - item.state == "present"
+    - item.devices[0] not in zpool_devices.stdout
+    - item.action|lower == "create"
+
+- name: manage_zfs | Create filesystem custom mountpoints
+  become: true
+  ansible.builtin.file:
+    path: "{{ item.options.mountpoint }}"
+    state: directory
+  register: mountpoint_created
+  loop: "{{ zfs_filesystems }}"
+  when:
+    - zfs_filesystems is defined
+    - zfs_create_filesystems
+    - item.options.mountpoint is defined
+    - item.state == "present"
+
+- name: manage_zfs | create basic filesystem
+  become: true
+  community.general.zfs:
+    name: "{{ item.pool }}/{{ item.name }}"
+    state: "{{ item.state }}"
+    extra_zfs_properties: "{{ item.options }}"
+  register: filesystem_created
+  loop: "{{ zfs_filesystems }}"
+  when:
+    - zfs_filesystems is defined
+    - zfs_create_filesystems
+    - item.pool in zpools.stdout
+    - item.state == "present"
+
+- name: manage_zfs | notify handler if NFS sharing is enabled and set in a filesystem
+  ansible.builtin.debug:
+      msg: "Triggering NFS reload due to shared filesystem: {{ item.name }}"
+  notify: Reload NFS
+  when:
+    - item.options.sharenfs is defined
+    - item.options.sharenfs
+    - zfs_enable_nfs
+    - zfs_create_filesystems
+  loop: "{{ zfs_filesystems }}"
+
+- name: manage_zfs | notify handler if SMB sharing is enabled and set in a filesystem
+  ansible.builtin.debug:
+      msg: "Triggering smbd reload due to shared filesystem: {{ item.name }}"
+  notify: Reload samba
+  when:
+    - item.options.sharesmb is defined
+    - item.options.sharesmb
+    - zfs_enable_samba
+    - zfs_create_filesystems
+  loop: "{{ zfs_filesystems }}"

@@ -1,0 +1,19 @@
+#SPDX-License-Identifier: MIT-0
+---
+# handlers file for roles/smb
+- name: Restart smbd (systemd)
+  become: true
+  ansible.builtin.systemd:
+    name: smbd
+    state: restarted
+  when: not running_in_molecule | default(false) 
+  listen: "restart samba services"
+
+- name: Restart smbd (molecule)
+  become: true
+  command: service smbd restart
+  async: 10
+  poll: 0
+  when: running_in_molecule | default(false)
+  changed_when: false
+  listen: "restart samba services" 

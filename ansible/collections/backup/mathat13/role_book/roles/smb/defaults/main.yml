@@ -1,0 +1,43 @@
+#SPDX-License-Identifier: MIT-0
+---
+# defaults file for roles/smb
+
+samba_workgroup: 'WORKGROUP'
+log_file: '/var/log/samba/log.%m'
+max_log_size: 5000
+logging_type: 'file'
+samba_log_level: 0
+panic_action:  '/usr/share/samba/panic-action %d'
+server_role: 'standalone server'
+map_to_guest: 'never'
+# make_dfs_server:
+directory_mask: "0775"
+create_mask: "0664"
+browseable: true
+read_only: false
+# valid_users: 
+# force_user: 
+# force_group:
+samba_shares_root: '/srv/shares'
+create_share_dirs: true
+
+samba_users: []
+# - name: velcro
+#   password: ovelcr
+
+samba_shares: []
+# - name: test1
+#   comment: "back to it"
+#   path: /test1
+#   directory_mask: "0770"
+#   create_mask: "0660"
+#   dfs_root_folder: true
+#   browseable: true
+#   read_only: true
+#   valid_users: acrobat
+#   force_user: acrobat
+#   force_group: acrobat
+
+samba_username_map: []
+
+# include_file:

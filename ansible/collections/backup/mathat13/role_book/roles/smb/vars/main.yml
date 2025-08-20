@@ -1,0 +1,12 @@
+#SPDX-License-Identifier: MIT-0
+---
+# vars file for roles/smb
+
+
+samba_configuration_dir: /etc/samba
+samba_configuration: "{{ samba_configuration_dir }}/smb.conf"
+samba_username_map_file: "{{ samba_configuration_dir }}/smbusers"
+
+samba_packages:
+  - samba
+  - smbclient

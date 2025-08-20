@@ -1,0 +1,47 @@
+---
+
+- name: Install zfs-utils
+  become: true
+  package:
+    name: zfsutils-linux
+    state: present
+
+- name: Install nfs-server
+  become: true
+  package:
+    name: nfs-kernel-server
+    state: present
+  when:
+    - zfs_enable_nfs is defined
+    - zfs_enable_nfs
+
+- name: Enable and start NFS service
+  become: true
+  ansible.builtin.systemd:
+    name: nfs-kernel-server
+    enabled: yes
+    state: started
+  when:
+    - zfs_enable_nfs is defined
+    - zfs_enable_nfs
+
+- name: Install samba server
+  become: true
+  package:
+    name: samba
+    state: present
+  when:
+    - zfs_enable_samba is defined
+    - zfs_enable_samba
+
+- name: Enable and start samba service
+  become: true
+  ansible.builtin.systemd:
+    name: smbd
+    enabled: yes
+    state: started
+  when:
+    - zfs_enable_samba is defined
+    - zfs_enable_samba
+
+# Install samba server

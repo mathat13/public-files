@@ -1,0 +1,46 @@
+---
+- name: Install nfs-server
+  become: true
+  package:
+    name: nfs-kernel-server
+    state: present
+
+- name: Fail if {{ nfs_share_path }} or {{ nfs_config_source }} is not present
+  block:
+    - name: Register {{ nfs_share_path }} directory status to exports_dir
+      stat:
+        path: "{{ nfs_share_path }}"
+      register: exports_dir
+
+    - name: Register nfs config status to file_status
+      ansible.builtin.stat:
+        path:  "{{ nfs_config_source }}"
+      register: file_status
+
+    - name: Fail if {{ nfs_share_path }} is not prepared
+      fail:
+        msg: "{{ nfs_share_path }} must exist before running NFS role"
+      when: not exports_dir.stat.exists
+
+    - name: Fail if nfs config is not prepared
+      fail:
+        msg: " {{ nfs_config_source }} must exist and be hardlinked to /etc/exports before running NFS role"
+      when: not file_status.stat.exists
+
+- name: Enable and start the service
+  become: true
+  ansible.builtin.systemd:
+    name: nfs-kernel-server
+    enabled: yes
+    state: started
+
+- name: Generate /etc/exports from template
+  become: true
+  template:
+    src: exports.j2
+    dest: /etc/exports
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart NFS
+

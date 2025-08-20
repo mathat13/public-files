@@ -1,0 +1,106 @@
+[global]
+
+## Browsing/Identification ###
+
+
+# Change this to the workgroup/NT-domain name your Samba server will part of
+  workgroup = {{ samba_workgroup }}
+
+#### Networking ####
+
+#...
+
+#### Debugging/Accounting ####
+
+# This tells Samba to use a separate log file for each machine
+# that connects
+   log file = {{ log_file }}
+
+# Cap the size of the individual log files (in KiB).
+   max log size = {{ max_log_size }}
+
+# We want Samba to only log to /var/log/samba/log.{smbd,nmbd}.
+# Append syslog@1 if you want important messages to be sent to syslog too.
+   logging = {{ logging_type }}
+
+# Do something sensible when Samba crashes: mail the admin a backtrace
+   panic action = {{ panic_action }}
+
+   log level = {{ samba_log_level }}
+
+####### Authentication #######
+
+# Server role. Defines in which mode Samba will operate. Possible
+# values are "standalone server", "member server", "classic primary
+# domain controller", "classic backup domain controller", "active
+# directory domain controller".
+#
+# Most people will want "standalone server" or "member server".
+# Running as "active directory domain controller" will require first
+# running "samba-tool domain provision" to wipe databases and create a
+# new domain.
+   server role = {{ server_role }}
+
+{% if samba_username_map %}
+  username map = {{ samba_username_map_file }}
+{% endif %}
+
+#...
+
+{% if make_dfs_server is defined %}
+  host msdfs = yes
+{% endif %}
+
+# Default share settings
+
+  directory mask = {{ directory_mask }}
+  create mask = {{ create_mask }}
+  browseable = {{ browseable | ternary('yes', 'no') }}
+  read only = {{ read_only | ternary('yes', 'no') }}
+
+{% if samba_shares|length > 0 %}
+
+####### Share Definitions #######
+
+{% for share in samba_shares %}
+[{{ share.name }}]
+  path = {{ share.path|default([samba_shares_root,share.name]|join('/')) }}
+{% if share.dfs_root_folder is defined %}
+  msdfsroot = yes
+{% endif %}
+{% if share.comment is defined %}
+  comment = {{ share.comment }}
+{% endif %}
+{% if share.directory_mask is defined %}
+  directory mask = {{ share.directory_mask }}
+{% endif %}
+{% if share.create_mask is defined %}
+  create mask = {{ share.create_mask }}
+{% endif %}
+{% if share.public is defined %}
+  public = {{ share.public | ternary('yes', 'no') }}
+{% endif %}
+{% if share.browseable is defined %}
+  browseable = {{ share.browseable | ternary('yes', 'no') }}
+{% endif %}
+{% if share.valid_users is defined %}
+  valid users = {{ share.valid_users | join(',') }}
+{% endif %}
+{% if share.force_user is defined %}
+  force user = {{ share.force_user }}
+{% endif %}
+{% if share.force_group is defined %}
+  force group = {{ share.force_group }}
+{% endif %}
+{% if share.read_only is defined %}
+  read only = {{ share.read_only | ternary('yes', 'no') }}
+{% endif %}
+
+{% endfor %}
+{% endif %}
+
+{% if include_file is defined %}
+####### Other #######
+
+  include = {{ include_file }}
+{% endif %}

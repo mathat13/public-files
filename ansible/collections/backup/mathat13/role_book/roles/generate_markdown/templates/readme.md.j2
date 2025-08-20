@@ -1,0 +1,40 @@
+{{ readme.role_name }}
+=========
+
+{{ readme.description }}
+
+Requirements
+------------
+
+{% for requirement in readme.requirements %}
+- {{ requirement }}
+{% endfor %}
+
+Role Variables
+--------------
+
+{% for variable in readme.role_variables %}
+- {{ variable }}
+{% endfor %}
+
+Dependencies
+------------
+
+{% for dependency in readme.dependencies %}
+- {{ dependency }}
+{% endfor %}
+
+Example Playbook
+----------------
+
+{{ readme.example_playbook }}
+
+License
+-------
+
+{{ readme.license }}
+
+Author Information
+------------------
+
+{{ readme.author_info }}
