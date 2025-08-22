@@ -1,0 +1,13 @@
+- hosts: localhost
+  gather_facts: false
+  become: yes
+  vars_files:
+    - generate_markdown_vars.yml
+  tasks:
+    - name: create README for specified role
+      include_role:
+        name: mathat13.server_builder.generate_markdown
+
+    - name: print playbook path
+      debug:
+        var: playbook_dir

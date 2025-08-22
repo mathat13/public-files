@@ -3,7 +3,7 @@
 # Define default variables
 SESSION_NAME="ansible-molecule"
 ROLE_NAME="smb"
-COLLECTION="/home/bestguy/.ansible/collections/mathat13/role_book/"
+COLLECTION="/home/bestguy/.ansible/collections/ansible_collections/mathat13/server_builder/"
 
 # Parse arguments
 # NOTE: bash: How to parse arguments for scripts
@@ -48,7 +48,7 @@ else
 
   # Activate the python virtual environment stored at the project root
   # NOTE: tmux: sending commands to session
-  tmux send-keys -t 1 "source .venv/bin/activate" C-m
+  tmux send-keys -t 1 "source ~/.ansible/.venv/bin/activate" C-m
 
   # Move to the role directory
   # NOTE: bash: Concatenating strings and variables

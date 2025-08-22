@@ -1,0 +1,109 @@
+---
+- name: Install required packages
+  become: true
+  package:
+    name: "{{ samba_packages }}"
+    state: present
+
+- name: Enable and start required services (systemd)
+  become: true
+  ansible.builtin.systemd:
+    name: smbd
+    enabled: yes
+    state: started
+  when: not running_in_molecule | default(false)
+
+- name: Enable and start required services (molecule)
+  become: true
+  command: service smbd start
+  async: 10
+  poll: 0
+  when: running_in_molecule | default(false)
+  changed_when: false
+
+- name: smb - Ensure group "smbwriters" exists
+  become: true
+  ansible.builtin.group:
+    name: smbwriters
+    state: present
+
+- name: smb - Add the system user 'velcro' for write access to smb shares
+  become: true
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    shell: /bin/bash
+    groups: smbwriters
+    append: yes
+  loop: "{{ samba_users }}"
+
+- name: smb - create samba users
+  become: true
+  ansible.builtin.shell: |
+    set -e -o pipefail &&
+    if ! pdbedit --user='{{ item.name }}' 2>&1 > /dev/null; then
+      (echo '{{ item.password }}'; echo '{{ item.password }}') | smbpasswd -s -a '{{ item.name }}'
+    fi
+  args:
+    executable: /bin/bash
+  register: samba_create_users
+  changed_when: "'Added user' in samba_create_users.stdout"
+  loop: "{{ samba_users }}"
+
+- name: shell - set samba passwords correctly
+  become: true
+  ansible.builtin.shell: |
+    set -e -o pipefail &&
+    if ! smbclient -U '{{ item.name }}'%'{{ item.password }}' -L 127.0.0.1 2>&1 > /dev/null; then
+      (echo '{{ item.password }}'; echo '{{ item.password }}') | smbpasswd '{{ item.name }}'
+    fi
+  args:
+    executable: /bin/bash
+  register: samba_verify_users
+  changed_when: "'New SMB password' in samba_verify_users.stdout"
+  loop: "{{ samba_users }}"
+  no_log: true
+
+- name: Create samba root dir if create_share_dirs is true
+  become: true
+  ansible.builtin.file:
+    path: "{{ samba_shares_root }}"
+    mode: "0775"
+    owner: root
+    group: smbwriters
+    state: directory
+  when: create_share_dirs
+
+- name: Create samba share dirs if create_share_dirs is true
+  become: true
+  ansible.builtin.file:
+    path: "{{ item.path | default([samba_shares_root, item.name] | join('/')) }}"
+    mode: " {{ item.directory_mask | default('0775') }}"
+    owner: "{{ item.force_user | default('root') }}"
+    group: "{{ item.force_group | default('smbwriters') }}"
+    state: directory
+  loop: "{{ samba_shares }}"
+  when: create_share_dirs
+
+
+- name: config - generate smb.conf from template
+  become: true
+  template:
+    src: smb.conf.j2
+    dest: "{{ samba_configuration }}"
+    validate: "testparm -s %s"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: "restart samba services"
+
+- name: Create username map file if needed
+  ansible.builtin.template:
+    dest: "{{ samba_username_map_file }}"
+    src: smbusers.j2
+    mode: '0644'
+  notify: "restart samba services"
+  when: samba_username_map | bool
+
+- name: Debug var
+  debug:
+    var: ansible_facts

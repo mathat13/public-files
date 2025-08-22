@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: mathat13.server_builder.smb
+  vars:
+    running_in_molecule: true
+  vars_files:
+    - vars.yml
