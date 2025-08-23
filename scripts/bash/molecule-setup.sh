@@ -3,7 +3,7 @@
 # Define default variables
 SESSION_NAME="ansible-molecule"
 ROLE_NAME="smb"
-COLLECTION="/home/bestguy/.ansible/collections/ansible_collections/mathat13/server_builder/"
+COLLECTION="/mnt/c/Users/liljo/repos/ansible_collections/mathat13/server_builder"
 
 # Parse arguments
 # NOTE: bash: How to parse arguments for scripts

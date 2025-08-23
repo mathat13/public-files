@@ -7,15 +7,13 @@ RUN apk add --no-cache bash curl dcron jq
 # Set a working directory
 WORKDIR /app
 
-# Copy the script into the container
+# Copy the  ip update script into the container
+# and make script executable
 COPY update-ip.sh /app/update-ip.sh
-
-# Make the script executable
-# Change to just make script executable
 RUN chmod +x /app/update-ip.sh
 
-# Create a cron job file to run the script every 5 minutes
-RUN echo "*/1 * * * * /app/update-ip.sh > /proc/1/fd/1 2>&1" > /etc/cron.d/dns-updater
+# Add entrypoint script for updating update frequency
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
-# Start cron and keep it running
-CMD ["crond", "-f", "-l", "2"]
+ENTRYPOINT ["/app/entrypoint.sh"]
