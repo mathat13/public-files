@@ -1,0 +1,9 @@
+services:
+  webhook-capture:
+    container_name: webhook-capture
+    image: mathat13/webhook-capture:latest
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    networks:
+      - default

@@ -1,0 +1,14 @@
+services:
+  cloudflare-ddns-updater:
+    image: mathat13/cloudflare-ddns-updater:latest
+    container_name: cloudflare-ddns-updater
+    init: true
+    restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    environment:
+      - DNS_RECORD_NAME=cabanaca.com
+      - PUT_KEY=DKHaZ4mSQo-K3UqenVoQ4FEwwyCieSC3CxOiVtqB
+

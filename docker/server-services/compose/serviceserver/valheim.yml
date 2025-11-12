@@ -18,6 +18,7 @@ services:
     restart: "no"
     # profiles: ["media", "all"]
     user: $PUID:$PGID
+    restart: always
     stop_grace_period: 2m
 
 

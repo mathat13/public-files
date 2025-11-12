@@ -1,3 +1,5 @@
+version: "3.9"
+ 
 ########################### NETWORKS
 networks:
   default:
@@ -22,7 +24,6 @@ include:
 
   # MEDIA
   - compose/$HOSTNAME/jellyfin.yml
-  # - compose/$HOSTNAME/tdarr.yml
 
   # DOWNLOADERS
   - compose/$HOSTNAME/qbittorrent.yml
@@ -30,10 +31,10 @@ include:
   # PVRS
   - compose/$HOSTNAME/radarr.yml
   - compose/$HOSTNAME/sonarr.yml
+  # - compose/$HOSTNAME/tdarr.yml
+  # - compose/$HOSTNAME/prowlarr.yml
 
-  # GAME SERVERS
+  # Miscellaneous
+  - compose/$HOSTNAME/cloudflare-ddns-updater.yml
+  - compose/$HOSTNAME/webhook-capture.yml
   # - compose/$HOSTNAME/valheim.yml
-
-  # OTHER
-  - compose/$HOSTNAME/cloudflare-ddns.yaml
-  

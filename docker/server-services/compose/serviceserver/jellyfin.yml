@@ -7,7 +7,7 @@ services:
       - default
     security_opt:
       - no-new-privileges:true
-    restart: always
+    restart: "unless-stopped"
     # profiles: ["media", "all"]
     user: $PUID:$PGID
     #group_add:
