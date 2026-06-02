@@ -1,4 +1,4 @@
-# HELPER FUNCTIONS
+## HELPER FUNCTIONS
 
 function Get-ProgramRegistryKey {
     param (
@@ -46,6 +46,8 @@ function Test-Command {
         )
     return [bool](Get-Command $Command -ErrorAction SilentlyContinue)
 }
+
+## Definitions
 
 # FIREFOX
 $firefoxpath = Get-RegistryValue -Key "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\firefox.exe" -Value '(default)'
