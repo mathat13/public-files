@@ -9,7 +9,7 @@ Our knowledge base needs a way to structure information in an intelligent way to
 
 ## Decision
 
-We will use this proposed structure:
+We will use this structure:
 
 knowledge_base/
     projects/
