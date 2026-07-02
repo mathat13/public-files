@@ -23,7 +23,7 @@ Each project shall contain a project.md file that acts as the canonical semantic
 ### Negative
 
 - We will have to be careful to not over-populate the file, as this may lead to the same problem as this file is intended to solve
-- 
+- Higher coupling as we now have a summarized representation of data as well as the data itself
 
 ## Alternatives Considered
 

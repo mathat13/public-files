@@ -1,4 +1,4 @@
-# ADR-0002: Knowledge Base Structure
+# ADR-0001: Knowledge Base Structure
 
 ## Status
 Proposed | In-Progress | Accepted
@@ -14,8 +14,16 @@ We will use this structure:
 knowledge_base/
     projects/
         project1/
-            adrs/
-            diagrams/
+            intent/
+            design/
+                worksheets/
+                adrs/
+                diagrams/
+            implementation/
+                worksheets/
+                adrs/
+                diagrams/
+            reflections/
             project.md
     decisions/
     patterns/
@@ -35,5 +43,4 @@ Where decisions are a generalized form of ADRs, and patterns are a generalized f
 
 ## Alternatives Considered
 
-SQL database:
-- 
+SQL database
