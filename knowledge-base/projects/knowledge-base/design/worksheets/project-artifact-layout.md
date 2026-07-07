@@ -4,7 +4,7 @@ How should project artifacts be organized?
 
 # Context
 
-We have our knowledge base organized via projects, but how should our projects folder organize itself?
+We have our knowledge base organized by projects, but project folders can also be organized optimally, how should we organize project folders to best balance all the factors present?
 
 # Solutions
 
@@ -72,6 +72,7 @@ project/
 - Again, this scales well and supports automation, but is too general of a structure to beat a more natural organization
 
 ## Phase of Engineering Reasoning - Selected
+
 - Believe to be the most natural representation of what a project is from start to finish
 - It scales well, it supports automation, and it is understandable at a glance, as long as you know what each of the stages mean
 - The final point meaning that it is more self-explanatory than the other solutions
@@ -80,4 +81,4 @@ project/
 
 ## Decision
 
-We will organize projects by phase of engineering reasoning.
+We will organize projects by phase of engineering reasoning, 

@@ -1,0 +1,18 @@
+@startuml
+
+
+component InternalNetwork as Internal {
+    component Router as router
+    component Server as server
+    component ContainerNetwork {
+        component DDNSContainer as ddns
+        }
+    port port_1 as port
+    router - port
+}
+
+component ExternalNetwork as External {
+    component ExternalDNS
+}
+
+@enduml

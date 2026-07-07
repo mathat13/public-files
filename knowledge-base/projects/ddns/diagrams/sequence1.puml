@@ -1,0 +1,36 @@
+@startuml
+title Dynamic DNS Synchronization
+
+actor "DDNS Service" as service
+
+note over service
+Periodically checks the
+public IP address to
+ensure external DNS
+remains accurate.
+end note
+
+participant "Public IP Website" as website
+participant "Cloudflare API" as api
+
+activate service
+service -> website : Public IP Request
+activate website
+
+website -> service : Public IP
+deactivate website
+
+note over service
+Compare retrieved public IP
+with cached value before
+issuing an update request.
+end note
+
+service -> api : External DNS Record Update Request
+activate api
+
+api -> service: External DNS Record Update Result
+deactivate api
+deactivate service
+
+@enduml
