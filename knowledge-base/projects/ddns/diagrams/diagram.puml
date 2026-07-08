@@ -1,18 +1,24 @@
 @startuml
 
+cloud Internet {
 
-component InternalNetwork as Internal {
-    component Router as router
-    component Server as server
-    component ContainerNetwork {
-        component DDNSContainer as ddns
-        }
-    port port_1 as port
-    router - port
+    component "Public IP Service"
+
+    component "Cloudflare API"
+
 }
 
-component ExternalNetwork as External {
-    component ExternalDNS
+package "Home Network" {
+
+    node "Host Server" {
+
+        component "DDNS Service"
+
+    }
+
 }
+
+"DDNS Service" --> "Public IP Service": Depends
+"DDNS Service" --> "Cloudflare API": Depends
 
 @enduml
