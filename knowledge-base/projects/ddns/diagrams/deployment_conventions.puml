@@ -1,0 +1,17 @@
+package "Notation" {
+
+    cloud "External System"
+
+    node "Infrastructure"
+
+    component "Service/ Application"
+
+}
+
+legend right
+
+|= Relationship |= Meaning |
+
+| --> | Depends on |
+
+endlegend

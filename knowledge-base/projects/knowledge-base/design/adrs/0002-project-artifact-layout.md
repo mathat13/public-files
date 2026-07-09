@@ -6,7 +6,7 @@
 
 ## Context
 
-We have our knowledge base organized by projects, but project artifacts can also be organized optimally, how should we organize project artifacts to best balance all the factors present?
+We have decided to organize our knowledge base by projects, but project artifacts can also be organized optimally, how should we organize project artifacts to best reflect the process of understanding a project?
 
 ## Decision
 

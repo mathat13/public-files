@@ -32,10 +32,12 @@ alt Public IP Changed
 else Public IP Unchanged
     
     note over service
-    No update required.
-    Cached public IP
-    matches current value.
+    No action as cached
+    public IP matches
+    current value.
     end note
+
+end
 
 deactivate service
 

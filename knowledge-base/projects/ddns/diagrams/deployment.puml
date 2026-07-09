@@ -21,4 +21,5 @@ package "Home Network" {
 "DDNS Service" --> "Public IP Service": Depends
 "DDNS Service" --> "Cloudflare API": Depends
 
+
 @enduml
