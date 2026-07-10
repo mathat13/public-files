@@ -1,0 +1,17 @@
+@startuml deployment_conventions
+title Deployment Conventions
+
+
+cloud "External System"
+
+node "Infrastructure"
+
+component "Service/ Application"
+
+legend right
+
+|= Relationship |= Meaning |
+
+| --> | Depends on |
+
+endlegend

@@ -8,4 +8,4 @@ Technical
 
 # Questions Answered
 
-- How does the service perform it's function in an ideal world?
+- How does the service perform it's function?

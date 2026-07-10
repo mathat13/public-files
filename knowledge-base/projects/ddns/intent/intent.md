@@ -13,6 +13,7 @@ Currently on a home network and plan to self-host a web server.  My home router 
 
 - The less money the better
 - Must be as simple as possible for the user to set up
+- Must be set-and-forget, that is user configures once and it then works
 
 # Vision
 
@@ -20,7 +21,7 @@ Dynamic updating of external DNS records without any intervention from oneself, 
 
 # Target Audience
 
-Home Lab entusiasts that have the same problem as me and want a simple and free solution to the problem.
+Home Lab entusiasts that want a way to keep their home network public IP synchronized with external DNS without having to buy a custom router.
 
 # Idea
 

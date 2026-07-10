@@ -1,4 +1,5 @@
-@startuml
+@startuml deployment
+title Deployment
 
 cloud Internet {
 
@@ -18,8 +19,8 @@ package "Home Network" {
 
 }
 
-"DDNS Service" --> "Public IP Service": Depends
-"DDNS Service" --> "Cloudflare API": Depends
+"DDNS Service" --> "Public IP Service"
+"DDNS Service" --> "Cloudflare API"
 
 
 @enduml
