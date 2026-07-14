@@ -38,8 +38,8 @@ Reflection
 Which gives us a final project.md structure of:
 
 Intent
-├── Motivation
 ├── Problem
+├── Motivation
 ├── Vision
 ├── Constraints
 └── Idea
@@ -47,12 +47,9 @@ Design
 ├── ADR index
 └── Diagram index
 Implementation
-├── ADR index
-├── Diagram index
 └── Repo
 Reflection
-├── Lessons
-└── Reasoning Evolution
+├── Outcomes
 
 ## Consequences
 

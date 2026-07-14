@@ -10,7 +10,7 @@ ensure external DNS
 remains accurate.
 end note
 
-participant "Public IP Service" as website
+participant "Public IP Lookup Service" as website
 participant "Cloudflare API" as api
 
 activate service
@@ -19,6 +19,13 @@ activate website
 
 website -> service : Public IP
 deactivate website
+
+note over service
+Compares received IP
+against cached value 
+and only updates if 
+value has changed.
+end note
 
 alt Public IP Changed
 

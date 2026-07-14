@@ -3,7 +3,7 @@ title Deployment
 
 cloud Internet {
 
-    component "Public IP Service"
+    component "Public IP Lookup Service"
 
     component "Cloudflare API"
 
@@ -19,8 +19,6 @@ package "Home Network" {
 
 }
 
-"DDNS Service" --> "Public IP Service"
+"DDNS Service" --> "Public IP Lookup Service"
 "DDNS Service" --> "Cloudflare API"
-
-
 @enduml

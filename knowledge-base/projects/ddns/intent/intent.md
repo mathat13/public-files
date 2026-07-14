@@ -4,25 +4,35 @@ Currently on a home network and plan to self-host a web server.  My home router 
 
 # Motivation
 
-- Current solutions are either too much effort or cost money
+- Many remote access solutions couple Dynamic DNS with tunnelling or remote access functionality, rather than providing a dedicated IP synchronisation service
+- I currently have a container network that could host this service
 - I would like to learn how to perform DDNS manually for learning purposes
 - I would like to learn how to containerize an application and put it on DockerHub
-- I would like to provide a solution to the world that simplifies something that can be seen as complex
 
-# Constraints
+# Target Audience
 
-- The less money the better
-- Must be as simple as possible for the user to set up
-- Must be set-and-forget, that is user configures once and it then works
+Home Lab entusiasts that value simplicity
 
 # Vision
 
 Dynamic updating of external DNS records without any intervention from oneself, improving internal service reliability for the external world and consequently, user experience.
 
-# Target Audience
+# Constraints
 
-Home Lab entusiasts that want a way to keep their home network public IP synchronized with external DNS without having to buy a custom router.
+## Assumptions
+
+- Users will already have the infrastructure required to host the service
+
+## Requirements
+
+- Must be set-and-forget, that is, user configures once and it then works
+
+## Preferences
+
+- The less money the better
+- Solution optimized for useability
+- Solution is implemented via docker containers
 
 # Idea
 
-A service that automatically detects changes to the home's public IP address and updates external DNS records accordingly.
+A service ran inside the home network that automatically detects changes to the home's public IP address and updates external DNS records accordingly
