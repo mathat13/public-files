@@ -1,8 +1,4 @@
-# ADR-0002: Project Artifact Organization
-
-## Dependencies
-
-- ADR-0001: Knowledge Base Artifact Organization
+# ADR-000x: Project Artifact Organization
 
 ## Context
 
@@ -21,6 +17,8 @@ project/
 ```
 
 Representing the progression from motivation through implementation to learning.
+
+We will also include a reasoning folder, for artifacts that are cross-cutting across the phases of engineering reasoning.
 
 ## Consequences
 

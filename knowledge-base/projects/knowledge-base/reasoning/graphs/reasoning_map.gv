@@ -1,0 +1,132 @@
+digraph {
+    rankdir=TB
+
+    graph [
+        ranksep=1.2
+        nodesep=0.8
+        pad=0.4
+        splines=ortho
+        overlap=false
+        fontname="Helvetica"
+    ]
+
+    node [
+        margin="0.3,0.15"
+        fontsize=18
+        fontname="Helvetica"
+        style=solid
+    ]
+
+    edge [
+        fontname="Helvetica"
+    ]
+
+    authority [
+        label="What makes engineering information authoritative?"
+        shape=diamond
+    ]
+
+    information_type_authority [
+        label="Which engineering information types are authoritative?"
+        shape=diamond
+    ]
+
+    engineering_information_types [
+        label="What types of engineering information exist?"
+        shape=diamond
+    ]
+
+    engineering_reasoning_phases [
+        label="What are the phases\n of engineering reasoning?"
+        shape=diamond
+    ]
+
+    engineering_phases [
+        label="What are the phases\n of engineering?"
+        shape=diamond
+    ]
+
+    kb_repo_responsibility [
+        label="What are the responsibilities of\nthe Knowledge Base and Repository?"
+        shape=box
+    ]
+
+    information_authority [
+        label="What is the authoritative source for\neach engineering information type?"
+        shape=oval
+    ]
+
+    kb_repo_docs_relationship [
+        label="What relationship should exist between\n repository documentation and the Knowledge Base?"
+        shape=oval
+    ]
+
+    documentation_definition [
+        label="What is repository documentation?"
+        shape=oval
+    ]
+
+    documentation_responsibility [
+        label="What responsibilities should repository documentation have?"
+        shape=oval
+    ]
+
+    kb_organization [
+        label="How should the knowledge base be organized?"
+        shape=oval
+    ]
+
+    project_artifact_organization [
+        label="How should project artifacts be organized?"
+        shape=box
+    ]
+
+    engineering_information_types -> information_type_authority
+    authority -> information_type_authority
+
+    information_type_authority -> information_authority
+    engineering_information_types -> kb_repo_responsibility
+    kb_repo_responsibility -> information_authority
+    
+    information_authority -> kb_repo_docs_relationship
+    documentation_definition ->  kb_repo_docs_relationship
+
+    documentation_definition -> documentation_responsibility
+
+    kb_organization -> project_artifact_organization
+    engineering_phases -> project_artifact_organization
+
+    subgraph cluster_legend {
+        label="Legend"
+
+        subgraph cluster_ko {
+            label="Knowledge Outcome"
+            fontsize=14
+
+            rankdir=LR
+
+            ko_key1 [label="ADR", shape=box]
+            ko_key2 [label="Classification", shape=diamond]
+            ko_key3 [label="Reasoning only", shape=oval, style=solid, peripheries=2]
+
+            ko_key1 -> ko_key2 [style=invis]
+            ko_key2 -> ko_key3 [style=invis]
+        }
+
+        subgraph cluster_erp {
+            label="Engineering Reasoning Phase"
+            fontsize=14
+
+            rankdir=LR
+
+            erp_key1 [label="Formulation", shape=oval, style=dotted]
+            erp_key2 [label="Exploration", shape=oval, style=dashed]
+            erp_key3 [label="Convergence", shape=oval, style=solid]
+            erp_key4 [label="Crystallization", shape=oval, style=bold]
+
+            erp_key1 -> erp_key2 [style=invis]
+            erp_key2 -> erp_key3 [style=invis]
+            erp_key3 -> erp_key4 [style=invis]
+        }
+    }
+}

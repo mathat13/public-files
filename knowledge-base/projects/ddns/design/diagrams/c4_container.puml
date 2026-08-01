@@ -1,0 +1,17 @@
+@startuml c4_container
+title Container Diagram
+!include <C4/C4_Deployment>
+
+System_Boundary(home, "Home Network") {
+
+    Container(ddns,"DDNS Service","Docker Container","Synchronizes Cloudflare DNS")
+
+}
+
+System_Ext(ip, "Public IP Service")
+System_Ext(cf, "Cloudflare API")
+
+Rel(ddns, ip, "Queries")
+Rel(ddns, cf, "Updates DNS")
+
+@enduml
