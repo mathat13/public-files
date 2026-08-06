@@ -59,21 +59,25 @@ digraph {
     kb_repo_docs_relationship [
         label="What relationship should exist between\n repository documentation and the Knowledge Base?"
         shape=oval
+        style=dashed
     ]
 
     documentation_definition [
         label="What is repository documentation?"
         shape=oval
+        style=dotted
     ]
 
     documentation_responsibility [
         label="What responsibilities should repository documentation have?"
         shape=oval
+        style=dashed
     ]
 
     kb_organization [
         label="How should the knowledge base be organized?"
         shape=oval
+        style=dotted
     ]
 
     project_artifact_organization [

@@ -1,0 +1,19 @@
+questions:
+    authority:
+        question: "What makes engineering information authoritative?"
+        summary: "Defines what information having authority means."
+        worksheet_path: "worksheets/authority.md"
+        knowledge_artifact:
+            type: "classification"
+            path: "classifications/authority.md"
+
+    information_authority:
+        question: "What is the authoritative source for each engineering information type?"
+        summary: "Maps engineering information types to their authoritative source."
+        worksheet_path: "worksheets/information_authority.md"
+        knowledge_artifact:
+            type: "classification"
+            path: "classifications/information_authority.md"
+        prerequisites:
+            - authority
+
